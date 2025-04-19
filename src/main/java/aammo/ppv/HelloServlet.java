@@ -9,7 +9,7 @@ public class HelloServlet extends HttpServlet {
     private String message;
 
     public void init() {
-        message = "Habashhhhyyyyyy";
+        message = "Taj";
     }
 
     /*this is new*/
