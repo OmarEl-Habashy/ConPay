@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.*;
 public class HelloServlet extends HttpServlet {
     private String message;
 
+    private static final long serialVID2 = 2L;
     public void init() {
         message = "Taj";
     }
