@@ -7,9 +7,11 @@ import jakarta.servlet.annotation.*;
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
     private String message;
+    private static final long serialVersionUID = 1L;
 
     public void init() {
         message = "Taj";
+
     }
 
     /*this is new*/
