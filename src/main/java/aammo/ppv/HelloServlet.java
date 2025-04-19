@@ -12,6 +12,7 @@ public class HelloServlet extends HttpServlet {
         message = "s";
     }
 
+    /*this is new*/
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
