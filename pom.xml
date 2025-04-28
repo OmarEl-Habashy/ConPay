@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>AAMMO</groupId>
-  <artifactId>PPV</artifactId>
+  <groupId>com.omar</groupId>
+  <artifactId>DataBaseTest</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>PPV</name>
+  <name>DataBaseTest</name>
   <packaging>war</packaging>
 
   <properties>
@@ -43,7 +43,26 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>  </dependencies>
+      </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>9.2.0</version> <!-- Use the latest version -->
+      </dependency>
+
+      <dependency>
+          <groupId>com.zaxxer</groupId>
+          <artifactId>HikariCP</artifactId>
+          <version>5.1.0</version>
+      </dependency>
+
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.2.11</version>
+      </dependency>
+
+  </dependencies>
 
   <build>
     <plugins>
