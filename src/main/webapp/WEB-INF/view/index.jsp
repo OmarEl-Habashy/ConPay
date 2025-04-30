@@ -7,7 +7,7 @@
 <body>
 <h1><%= "supermario!" %></h1>
 <br/>
-<script>
+<script>ljfgikc
     var greeting = "Hello, World!";
     document.write(greeting);
 </script>
