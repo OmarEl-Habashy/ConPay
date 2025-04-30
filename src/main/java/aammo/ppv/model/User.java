@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
+    private static int idCounter = 0; // Static counter for auto-incrementing IDs
     private int userId;
     private String username;
     private String email;
@@ -11,13 +12,16 @@ public class User {
     private String bio;
     private LocalDateTime createdAt;
 
-    public User(int userId, String username, String email, String hashedPassword, String bio, LocalDateTime createdAt) {
-        this.userId = userId;
+    public User( String username, String email, String hashedPassword, String bio, LocalDateTime createdAt) {
+        this.userId = ++idCounter; // Increment the counter for each new user
         this.username = username;
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.bio = bio;
         this.createdAt = createdAt;
+    }
+    public User(String username, String email, String hashedPassword) {
+        this(username, email, hashedPassword, null, LocalDateTime.now());
     }
 
     public int getUserId() {

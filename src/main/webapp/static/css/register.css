@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif; /* Use a font similar to the image */
+    background-color: #f8f9fa; /* Light background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #212529; /* Default text color */
+}
+form {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+}
+h1 {
+    font-size: 2.5rem; /* Large heading */
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Include padding/border in width */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input[type="email"]::placeholder,
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #adb5bd; /* Placeholder text color */
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #86b7fe; /* Highlight on focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Checkbox Groups */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start; /* Align items to top for multi-line labels */
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #495057;
+}
+.checkbox-group.terms {
+    margin-bottom: 10px; /* Less space below terms */
+}
+.checkbox-group input[type="checkbox"] {
+    margin-top: 0.2em; /* Align checkbox slightly better with first line */
+    margin-right: 10px;
+    flex-shrink: 0; /* Prevent checkbox from shrinking */
+}
+
+.checkbox-group label {
+    font-weight: 400; /* Normal weight for checkbox labels */
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.checkbox-group a,
+.signup-link a {
+    color: #0d6efd; /* Standard link blue */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.checkbox-group a:hover,
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* Buttons */
+.btn {
+    display: inline-block; /* Changed for flexibility */
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    background-color: #4263eb; /* Blue color from image */
+    color: #ffffff;
+    width: 100%; /* Make primary login button full width */
+    margin-bottom: 25px;
+}
+
+.btn-primary:hover {
+    background-color: #364fc7; /* Darker blue on hover */
+}
+/* Signup Link */
+.signup-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 15px; /* Space above signup link */
+}
