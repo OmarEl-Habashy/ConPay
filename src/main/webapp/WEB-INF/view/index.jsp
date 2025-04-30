@@ -7,6 +7,10 @@
 <body>
 <h1><%= "supermario!" %></h1>
 <br/>
+<script>
+    var greeting = "Hello, World!";
+    document.write(greeting);
+</script>
 <a href="hello-servlet">Hello Servlet</a>
 </body>
 </html>

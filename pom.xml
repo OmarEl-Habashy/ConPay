@@ -7,7 +7,7 @@
   <groupId>com.omar</groupId>
   <artifactId>DataBaseTest</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>DataBaseTest</name>
+  <username>DataBaseTest</username>
   <packaging>war</packaging>
 
   <properties>
