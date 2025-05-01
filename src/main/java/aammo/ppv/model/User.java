@@ -12,6 +12,14 @@ public class User {
     private String bio;
     private LocalDateTime createdAt;
 
+    public User(int userId, String username, String email, String hashedPassword, String bio, LocalDateTime createdAt) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+        this.bio = bio;
+        this.createdAt = createdAt;
+    }
     public User( String username, String email, String hashedPassword, String bio, LocalDateTime createdAt) {
         this.userId = ++idCounter; // Increment the counter for each new user
         this.username = username;

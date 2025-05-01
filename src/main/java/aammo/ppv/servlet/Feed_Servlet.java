@@ -1,4 +1,4 @@
-package aammo.ppv.controller;
+package aammo.ppv.servlet;
 import aammo.ppv.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @WebServlet("/feed")
 public class Feed_Servlet extends HttpServlet {

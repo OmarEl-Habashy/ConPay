@@ -18,5 +18,6 @@
 <%
     }
 %>
+<button onclick="location.href='${pageContext.request.contextPath}/profile'">Profile</button>
 </body>
 </html>
