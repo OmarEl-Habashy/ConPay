@@ -2,7 +2,7 @@ package aammo.ppv.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+//new
 public class User {
     private static int idCounter = 0; // Static counter for auto-incrementing IDs
     private int userId;
