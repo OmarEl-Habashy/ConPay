@@ -1,15 +1,19 @@
 package aammo.ppv.dao;
 
 import aammo.ppv.model.User;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class JdbcUserDAO implements UserDAO {
-    private final String jdbcURL = "jdbc:mysql://127.0.0.1:3306/conpay";
-    private final String jdbcUsername = "root";
-    private final String jdbcPassword = "root";
+    private String jdbcURL ;
+    private String jdbcUsername;
+    private String jdbcPassword;
 
     // Basic CRUD SQL statements
     private static final String INSERT_USER_SQL = "INSERT INTO Users (Username, Email, PassW, Bio) VALUES (?, ?, ?, ?)";
@@ -29,6 +33,33 @@ public class JdbcUserDAO implements UserDAO {
             "SELECT u.* FROM Users u JOIN Follows f ON u.UserID = f.FollowerID WHERE f.FolloweeID = ?";
     private static final String SELECT_FOLLOWING =
             "SELECT u.* FROM Users u JOIN Follows f ON u.UserID = f.FolloweeID WHERE f.FollowerID = ?";
+
+
+
+    public JdbcUserDAO() {
+        loadProperties();
+    }
+
+    // Load connection properties from config file
+    private void loadProperties() {
+        Properties props = new Properties();
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            if (inputStream != null) {
+                props.load(inputStream);
+                jdbcURL = props.getProperty("db.url");
+                jdbcUsername = props.getProperty("db.username");
+                jdbcPassword = props.getProperty("db.password");
+                System.out.println("Database configuration loaded successfully");
+            } else {
+                System.out.println("config.properties not found, using defaults");
+
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading properties: " + e.getMessage());
+
+        }
+    }
 
     public Connection getConnection() throws SQLException {
         try {
