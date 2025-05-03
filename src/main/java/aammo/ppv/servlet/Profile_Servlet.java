@@ -17,15 +17,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/profile/*")
+@WebServlet("/user/profile/*")
 public class Profile_Servlet extends HttpServlet {
     private UserController userController;
     private PostController postController;
 
     @Override
     public void init() {
+        System.out.println("Profile_Servlet initialized with mapping: " + getServletConfig().getServletName());
         userController = new UserController(UserDAOFactory.getUserDAO());
-        // Assuming you have or will create a PostController and DAO
         postController = new PostController(PostDAOFactory.getPostDAO());
     }
 
@@ -35,7 +35,7 @@ public class Profile_Servlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         try {
-            // Path format: /profile/{username}
+            // Path format: /user/profile/{username}
             if (pathInfo != null && pathInfo.length() > 1) {
                 String username = pathInfo.substring(1); // Remove leading slash
                 displayUserProfile(username, request, response);
@@ -45,7 +45,7 @@ public class Profile_Servlet extends HttpServlet {
                 User currentUser = (User) session.getAttribute("user");
 
                 if (currentUser != null) {
-                    response.sendRedirect(request.getContextPath() + "/profile/" + currentUser.getUsername());
+                    response.sendRedirect(request.getContextPath() + "/user/profile/" + currentUser.getUsername());
                 } else {
                     // Not logged in, redirect to login
                     response.sendRedirect(request.getContextPath() + "/login");
@@ -91,7 +91,7 @@ public class Profile_Servlet extends HttpServlet {
             request.setAttribute("isFollowing", isFollowing);
 
             // Forward to the profile JSP
-            request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/user/profile.jsp").forward(request, response);
         } else {
             // User not found
             request.setAttribute("errorMessage", "User '" + username + "' not found");
@@ -123,7 +123,7 @@ public class Profile_Servlet extends HttpServlet {
                     updateProfile(request, response, currentUser);
                     break;
                 default:
-                    response.sendRedirect(request.getContextPath() + "/profile/" + currentUser.getUsername());
+                    response.sendRedirect(request.getContextPath() + "/user/profile/" + currentUser.getUsername());
             }
         } catch (SQLException e) {
             throw new ServletException("Database error occurred", e);
@@ -138,7 +138,7 @@ public class Profile_Servlet extends HttpServlet {
 
         // Redirect back to the profile page
         String username = request.getParameter("username");
-        response.sendRedirect(request.getContextPath() + "/profile/" + username);
+        response.sendRedirect(request.getContextPath() + "/user/profile/" + username);
     }
 
     private void unfollowUser(HttpServletRequest request, HttpServletResponse response, User currentUser)
@@ -149,7 +149,7 @@ public class Profile_Servlet extends HttpServlet {
 
         // Redirect back to the profile page
         String username = request.getParameter("username");
-        response.sendRedirect(request.getContextPath() + "/profile/" + username);
+        response.sendRedirect(request.getContextPath() + "/user/profile/" + username);
     }
 
     private void updateProfile(HttpServletRequest request, HttpServletResponse response, User currentUser)
@@ -165,10 +165,10 @@ public class Profile_Servlet extends HttpServlet {
             request.getSession().setAttribute("user", currentUser);
 
             // Redirect back to the profile
-            response.sendRedirect(request.getContextPath() + "/profile/" + currentUser.getUsername());
+            response.sendRedirect(request.getContextPath() + "/user/profile/" + currentUser.getUsername());
         } catch (IllegalArgumentException e) {
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/edit-profile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/user/edit-profile.jsp").forward(request, response);
         }
     }
 }
