@@ -1,25 +1,14 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: red;
-
-}
-
-header {
-    width: 100%;
-    height: 200px;
-    background-color: #1da1f2;
-}
 
 .profile-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: -60px;
+    align-items: flex-start;  /* Left-align content inside the container */
+    margin: 45px 0 0 50px;
+    padding-top: 30px;
 }
 
 .profile-pic {
+    padding: 1000px;
     width: 120px;
     height: 120px;
     background-color: #e6ecf0;
@@ -30,33 +19,22 @@ header {
     justify-content: center;
     font-size: 48px;
     color: #657786;
-}
-
-.profile-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.profile-handle {
-    color: #657786;
-    font-size: 16px;
     margin-bottom: 10px;
+    margin-top: 10px;/* Add some space below the picture */
 }
 
-.profile-bio {
-    font-style: italic;
-    color: #555;
+.profile-name,
+.profile-handle,
+.profile-bio,
+.profile-stats {
+    text-align: left;         /* Ensure text is aligned left */
+    width: 100%;              /* Optional: stretch across container */
 }
 
 .profile-stats {
     display: flex;
     gap: 20px;
     margin-top: 10px;
-}
-
-.profile-stats span {
-    font-weight: bold;
 }
 
 button {
@@ -69,8 +47,4 @@ button {
     font-size: 14px;
     cursor: pointer;
     transition: background 0.2s ease-in-out;
-}
-
-button:hover {
-    background-color: #0d8ddb;
 }
