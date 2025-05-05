@@ -1,16 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: omare
-  Date: 4/30/2025
-  Time: 6:50 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/login.css">
 </head>
 <body>
+<div class="container">
+    <div class="left">
+        <p><strong>Hey!</strong> We are very happy to see you here!</p>
+    </div>
+    <div class="right">
+        <form action="LoginServlet" method="post">
+            <div class="form-group">
+                <label for="username">User Name</label>
+                <input type="text" name="username" id="username" placeholder="Your favourite UserName!" required>
+            </div>
 
+            <!-- Removed email field as per your request -->
+            <!-- <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="name@domain.com" required>
+            </div> -->
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="************" required>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" name="agree" required>
+                <span class="terms">
+                    By signing up, you are creating a ConPay account, and you agree to ConPay's
+                    <a href="#">Term of Use</a> and <a href="#">Privacy Policy</a>.
+                </span>
+            </div>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</div>
 </body>
 </html>
