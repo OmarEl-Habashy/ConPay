@@ -256,4 +256,34 @@ public class JdbcPostDAO implements PostDAO {
         Date createdAt = new Date(rs.getTimestamp("CreatedAt").getTime());
         return new Post(postId, userId, contentURL, caption, createdAt);
     }
+
+    // Method to insert a like into the Likes table
+    public void insertLike(int postId, int userId) throws SQLException {
+        String insertLikeSQL = "INSERT INTO Likes (PostID, UserID) VALUES (?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertLikeSQL)) {
+            preparedStatement.setInt(1, postId);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            // Handle duplicate likes gracefully
+            System.err.println("User has already liked this post.");
+        }
+    }
+
+    // Method to insert a comment into the Comments table
+    public void insertComment(int postId, int userId, String content) throws SQLException {
+        String insertCommentSQL = "INSERT INTO Comments (PostID, UserID, Content) VALUES (?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertCommentSQL)) {
+            preparedStatement.setInt(1, postId);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setString(3, content);
+
+            preparedStatement.executeUpdate();
+        }
+    }
 }

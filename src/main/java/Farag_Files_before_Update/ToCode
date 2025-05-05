@@ -1,0 +1,4 @@
+The servlet uses the JdbcPostDAO to interact with the database.
+It checks the action parameter to determine whether to like or comment.
+It ensures the user is logged in by checking the session.
+You will also need to implement insertLike and insertComment methods in the JdbcPostDAO.
