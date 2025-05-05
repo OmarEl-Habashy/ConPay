@@ -38,27 +38,20 @@ public class PostController {
         return postDAO.getAllPosts(offset, pageSize);
     }
 
-    public boolean updatePost(Post post, int currentUserId) throws SQLException {
-        // Ensure the user owns this post
+    public boolean updatePost(Post post, int userId) throws SQLException {
         Post existingPost = postDAO.getPostById(post.getPostId());
-        if (existingPost == null || existingPost.getUserId() != currentUserId) {
+        if (existingPost == null || existingPost.getUserId() != userId) {
             return false;
         }
-
-        // Validate the updated post data
         validatePostData(post);
-
-        // Update the post
         return postDAO.updatePost(post);
     }
 
-    public boolean deletePost(int postId, int currentUserId) throws SQLException {
-        // Ensure the user owns this post
+    public boolean deletePost(int postId, int userId) throws SQLException {
         Post existingPost = postDAO.getPostById(postId);
-        if (existingPost == null || existingPost.getUserId() != currentUserId) {
+        if (existingPost == null || existingPost.getUserId() != userId) {
             return false;
         }
-
         return postDAO.deletePost(postId);
     }
 
@@ -82,5 +75,41 @@ public class PostController {
         }
 
         // You can add more validation rules as needed
+    }
+
+    // insert like
+    public void insertLike(int postId, int userId) throws SQLException {
+        // Validate input
+        if (postId <= 0 || userId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID or user ID");
+        }
+
+        // Insert like
+        postDAO.insertLike(postId, userId);
+    }
+
+    // insert comment
+    public void insertComment(int postId, int userId, String content) throws SQLException {
+        // Validate input
+        if (postId <= 0 || userId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID or user ID");
+        }
+        if (content == null || content.trim().isEmpty()) {
+            throw new IllegalArgumentException("Comment content cannot be empty");
+        }
+
+        // Insert comment
+        postDAO.insertComment(postId, userId, content.trim());
+    }
+
+    //get post by id
+    public Post getPostById(int postId) throws SQLException {
+        // Validate input
+        if (postId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID");
+        }
+
+        // Retrieve the post
+        return postDAO.getPostById(postId);
     }
 }

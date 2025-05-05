@@ -1,6 +1,8 @@
 package aammo.ppv.servlet;
 
+import aammo.ppv.controller.PostController;
 import aammo.ppv.dao.JdbcPostDAO;
+import aammo.ppv.dao.PostDAOFactory;
 import aammo.ppv.model.Post;
 import aammo.ppv.model.User;
 import jakarta.servlet.ServletException;
@@ -14,11 +16,12 @@ import java.sql.SQLException;
 
 @WebServlet("/postAction")
 public class Post_Servlet extends HttpServlet {
-    private JdbcPostDAO postDAO;
+    private PostController postController;
+
 
     @Override
     public void init() {
-        postDAO = new JdbcPostDAO();
+        postController = new PostController(PostDAOFactory.getPostDAO());
     }
 
     @Override
@@ -64,7 +67,7 @@ public class Post_Servlet extends HttpServlet {
     }
 
     private void handleLikeAction(int postId, int userId, HttpServletResponse response) throws SQLException, IOException {
-        postDAO.insertLike(postId, userId);
+        postController.insertLike(postId, userId);
         sendSuccessResponse(response, "Post liked successfully!");
     }
 
@@ -74,17 +77,17 @@ public class Post_Servlet extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Comment content cannot be empty.");
             return;
         }
-        postDAO.insertComment(postId, userId, content.trim());
+        postController.insertComment(postId, userId, content.trim());
         sendSuccessResponse(response, "Comment added successfully!");
     }
 
     private void handleDeleteAction(int postId, int userId, HttpServletResponse response) throws SQLException, IOException {
-        Post post = postDAO.getPostById(postId);
+        Post post = postController.getPostById(postId);
         if (post == null || post.getUserId() != userId) {
             sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "You are not authorized to delete this post.");
             return;
         }
-        postDAO.deletePost(postId);
+        postController.deletePost(postId, userId);
         sendSuccessResponse(response, "Post deleted successfully!");
     }
 
@@ -94,13 +97,13 @@ public class Post_Servlet extends HttpServlet {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Caption cannot be empty.");
             return;
         }
-        Post post = postDAO.getPostById(postId);
+        Post post = postController.getPostById(postId);
         if (post == null || post.getUserId() != userId) {
             sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "You are not authorized to update this post.");
             return;
         }
         post.setCaption(newCaption.trim());
-        postDAO.updatePost(post);
+        postController.updatePost(post, userId);
         sendSuccessResponse(response, "Post updated successfully!");
     }
 
