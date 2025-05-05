@@ -54,7 +54,7 @@
             Boolean isOwnProfile = (Boolean) request.getAttribute("isOwnProfile");
             if (isOwnProfile != null && isOwnProfile) {
         %>
-        <form action="${pageContext.request.contextPath}/user/profile" method="post">
+        <form action="${pageContext.request.contextPath}/user/editProfile" method="get">
             <input type="hidden" name="action" value="edit">
             <button type="submit" class="btn btn-edit">Edit profile</button>
         </form>
