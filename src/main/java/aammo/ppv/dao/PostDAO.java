@@ -31,4 +31,10 @@ public interface PostDAO {
 
     // Get posts with a specific hashtag (optional feature)
     List<Post> getPostsByHashtag(String hashtag, int offset, int limit) throws SQLException;
+
+    //insert like
+    void insertLike(int postId, int userId) throws SQLException;
+
+    //insert comment
+    void insertComment(int postId, int userId, String content) throws SQLException;
 }
