@@ -92,7 +92,7 @@ VALUES (2, 1), -- Jane follows John
        (3, 1); -- Admin follows John
 
 select *
-from Users
+from Users;
 UPDATE Users
 SET Bio = 'this is a new Bio!!'
 WHERE UserID = 12;

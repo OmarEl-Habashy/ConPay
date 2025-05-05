@@ -287,4 +287,19 @@ public class JdbcUserDAO implements UserDAO {
 
         return new User(id, username, email, password, bio, createdAt);
     }
+
+
+    public boolean LoginUser(User user) throws SQLException {
+        boolean exists = false;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_USERNAME)) {
+            preparedStatement.setString(1, user.getUsername());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                exists = true;
+            }
+        }
+        return exists;
+    }
 }
