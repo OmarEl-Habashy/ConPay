@@ -1,7 +1,7 @@
 package aammo.ppv.dao;
 
 import aammo.ppv.model.User;
-
+import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -289,17 +289,22 @@ public class JdbcUserDAO implements UserDAO {
     }
 
 
-    public boolean LoginUser(User user) throws SQLException {
-        boolean exists = false;
+    public User LoginUser(String username, String password) throws SQLException {
+        User user = null;
+        String query = "SELECT * FROM Users WHERE Username = ?";
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_USERNAME)) {
-            preparedStatement.setString(1, user.getUsername());
-            ResultSet rs = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    String storedPassword = rs.getString("PassW");
 
-            if (rs.next()) {
-                exists = true;
+                    // Direct password comparison
+                    if (password.equals(storedPassword)) {
+                        user = extractUserFromResultSet(rs);
+                    }
+                }
             }
         }
-        return exists;
-    }
-}
+        return user;
+    }}

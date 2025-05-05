@@ -8,7 +8,7 @@ public interface UserDAO {
     // Basic CRUD operations
     void insertUser(User user) throws SQLException;
     User selectUser(int userId) throws SQLException;
-    boolean LoginUser(User user) throws SQLException;
+    User LoginUser(String username, String password) throws SQLException;
     List<User> selectAllUsers() throws SQLException;
     boolean updateUser(User user) throws SQLException;
     boolean deleteUser(int id) throws SQLException;

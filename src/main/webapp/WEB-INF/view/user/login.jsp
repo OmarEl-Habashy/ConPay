@@ -11,7 +11,7 @@
         <p><strong>Hey!</strong> We are very happy to see you here!</p>
     </div>
     <div class="right">
-        <form action="LoginServlet" method="post">
+        <form action="login" method="post">
             <div class="form-group">
                 <label for="username">User Name</label>
                 <input type="text" name="username" id="username" placeholder="Your favourite UserName!" required>

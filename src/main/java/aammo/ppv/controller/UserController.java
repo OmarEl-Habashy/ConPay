@@ -19,6 +19,9 @@ public class UserController {
         validateUserData(user);
         userDAO.insertUser(user);
     }
+    public User LoginUser(String username, String password) throws SQLException {
+        return userDAO.LoginUser(username, password);
+    }
 
     public User selectUser(int userId) throws SQLException {
         return userDAO.selectUser(userId);
@@ -71,4 +74,5 @@ public class UserController {
     public void unfollowUser(int followerId, int followeeId) throws SQLException {
         userDAO.unfollowUser(followerId, followeeId);
     }
+
 }
