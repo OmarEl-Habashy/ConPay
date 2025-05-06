@@ -1,0 +1,64 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="aammo.ppv.model.Post" %>
+<%@ page import="aammo.ppv.model.Comment" %>
+<%@ page import="java.util.List" %>
+<html>
+<head>
+    <title>View Post</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/viewPost.css">
+</head>
+<body>
+<div class="post-container">
+    <!-- Post Content -->
+    <div class="post">
+        <%
+            Post post = (Post) request.getAttribute("post");
+            List<Comment> comments = (List<Comment>) request.getAttribute("comments");
+            Integer likeCount = (Integer) request.getAttribute("likeCount");
+        %>
+
+        <!-- Post Image -->
+        <% if (post.getContentURL() != null && !post.getContentURL().isEmpty()) { %>
+        <div class="post-image">
+            <img src="<%= post.getContentURL() %>" alt="Post content">
+        </div>
+        <% } %>
+
+        <!-- Like Section -->
+        <div class="post-actions">
+            <form action="${pageContext.request.contextPath}/postAction" method="post" class="like-form">
+                <input type="hidden" name="action" value="like">
+                <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                <button type="submit" class="like-btn">
+                    ❤ <%= likeCount %> likes
+                </button>
+            </form>
+        </div>
+
+        <!-- Caption -->
+        <div class="post-caption">
+            <span class="caption"><%= post.getCaption() %></span>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>Comments (<%= comments.size() %>)</h3>
+            <% for (Comment comment : comments) { %>
+            <div class="comment">
+                <span class="comment-text"><%= comment.getContent() %></span>
+                <span class="comment-date"><%= comment.getCreatedAt() %></span>
+            </div>
+            <% } %>
+
+            <!-- Comment Form -->
+            <form action="${pageContext.request.contextPath}/postAction" method="post" class="comment-form">
+                <input type="hidden" name="action" value="comment">
+                <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                <textarea name="content" placeholder="Add a comment..." required></textarea>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
