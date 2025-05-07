@@ -15,8 +15,18 @@
 <%
 } else {
 %>
+
 <header></header>
 
+<!-- 🔍 Search Bar -->
+<div class="search-bar-container">
+    <form action="${pageContext.request.contextPath}/search" method="get">
+        <input type="text" name="query" placeholder="Search users..." class="search-input">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+<!-- 👤 Profile Section -->
 <div class="profile-container">
     <div class="profile-pic"><%= user.getUsername().substring(0,1).toLowerCase() %></div>
     <div class="profile-name"><%= user.getUsername() %></div>
