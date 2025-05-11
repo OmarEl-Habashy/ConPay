@@ -97,4 +97,20 @@ UPDATE Users
 SET Bio = 'this is a new Bio!!'
 WHERE UserID = 12;
 select *
-from Users
+from Users;
+UPDATE Users
+    SET PassW = 'hashed_password_1'
+    WHERE UserID = 1;
+UPDATE Users
+SET PassW = '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'
+WHERE Username = 'john_doe';
+
+-- select users who like post with ID 1
+select u.*
+from Users u
+join Likes l on u.UserID = l.UserID
+where l.PostID = 1;
+
+
+SELECT * from Posts;
+delete from Posts where PostID = 5;

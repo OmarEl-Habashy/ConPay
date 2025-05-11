@@ -1,9 +1,11 @@
 package aammo.ppv.controller;
 
-import aammo.ppv.dao.PostDAO;
-import aammo.ppv.model.Post;
 import java.sql.SQLException;
 import java.util.List;
+
+import aammo.ppv.dao.PostDAO;
+import aammo.ppv.model.Comment;
+import aammo.ppv.model.Post;
 
 public class PostController {
     private final PostDAO postDAO;
@@ -111,5 +113,64 @@ public class PostController {
 
         // Retrieve the post
         return postDAO.getPostById(postId);
+    }
+
+    // Get comments for a post
+    public List<Comment> getCommentsForPost(int postId) throws SQLException {
+        // Validate input
+        if (postId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID");
+        }
+
+        // Retrieve comments with username information
+        return postDAO.getCommentsByPostId(postId);
+    }
+
+    // Get like count for a post
+    public int getLikeCount(int postId) throws SQLException {
+        // Validate input
+        if (postId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID");
+        }
+
+        // Get like count
+        return postDAO.getLikeCountByPostId(postId);
+    }
+
+    // Check if a user has liked a post
+    public boolean hasUserLikedPost(int postId, int userId) throws SQLException {
+        // Validate input
+        if (postId <= 0 || userId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID or user ID");
+        }
+
+        // Check if user has liked this post
+        return postDAO.hasUserLikedPost(postId, userId);
+    }
+
+// Updated toggleLike method:
+
+    public void toggleLike(int postId, int userId) throws SQLException {
+        // Validate input
+        if (postId <= 0 || userId <= 0) {
+            throw new IllegalArgumentException("Invalid post ID or user ID");
+        }
+
+        // Get the post to verify it exists
+        Post post = postDAO.getPostById(postId);
+        if (post == null) {
+            throw new IllegalArgumentException("Post not found");
+        }
+
+        // Allow self-likes: No check whether post.getUserId() == userId
+
+        // Check if user has already liked this post
+        if (postDAO.hasUserLikedPost(postId, userId)) {
+            // If already liked, remove the like
+            postDAO.removeLike(postId, userId);
+        } else {
+            // If not liked, add a like
+            postDAO.insertLike(postId, userId);
+        }
     }
 }

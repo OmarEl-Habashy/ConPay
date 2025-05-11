@@ -14,7 +14,9 @@
         <p>Already have an account?</p>
         <a href="${pageContext.request.contextPath}/login" class="btn btn-secondary">Login here</a>
     </div>
-
+    <% if (request.getAttribute("errorMessage") != null) { %>
+    <div class="error"><%= request.getAttribute("errorMessage") %></div>
+    <% } %>
     <!-- Register Form -->
     <form action="register" method="post">
         <div class="form-group">

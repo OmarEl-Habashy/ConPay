@@ -8,6 +8,9 @@ body {
     align-items: center;
     justify-content: center;
 }
+#error-message{
+    text-color: red;
+}
 
 .container {
     display: flex;

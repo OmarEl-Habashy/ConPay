@@ -1,0 +1,29 @@
+[2025-05-06 15:31:30] VIEW_POST: User viewed post ID: 2
+[2025-05-06 15:31:33] VIEW_POST: User viewed post ID: 2
+[2025-05-06 15:31:54] COMMENT: User ID: 1 commented on post ID: 2 - Content: hello jane, nice photos!
+[2025-05-06 15:31:54] VIEW_POST: User viewed post ID: 2
+[2025-05-06 15:31:56] VIEW_POST: User viewed post ID: 2
+[2025-05-06 15:31:58] VIEW_POST: User viewed post ID: 2
+[2025-05-06 15:32:02] VIEW_POST: User viewed post ID: 3
+[2025-05-06 15:32:25] VIEW_POST: User viewed post ID: 3
+[2025-05-06 16:11:18] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:11:37] COMMENT: User=john_doe, PostID=3, Content=hello me!
+~ i think i am crazy
+
+[2025-05-06 16:11:37] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:11:43] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:16:53] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:17:01] COMMENT: User=john_doe, PostID=3, Content=yoooooo
+[2025-05-06 16:17:01] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:17:04] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:17:05] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:17:08] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 16:17:18] POST_VIEW: User=john_doe, PostID=2
+[2025-05-06 16:17:21] POST_VIEW: User=john_doe, PostID=2
+[2025-05-06 16:17:21] POST_VIEW: User=john_doe, PostID=2
+[2025-05-06 16:17:25] POST_VIEW: User=john_doe, PostID=2
+[2025-05-06 16:19:45] AUTH_ERROR: Unauthorized post action attempt
+[2025-05-06 16:27:00] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 17:06:50] POST_VIEW: User=john_doe, PostID=3
+[2025-05-06 17:58:31] POST_VIEW: Guest view, PostID=3
+[2025-05-06 17:58:44] POST_VIEW: User=john_doe, PostID=3

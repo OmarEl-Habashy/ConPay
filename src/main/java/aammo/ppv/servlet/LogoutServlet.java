@@ -11,7 +11,6 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Invalidate the session to log out the user
         if (request.getSession(false) != null) {
             request.getSession().invalidate();
         }
@@ -21,7 +20,6 @@ public class LogoutServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        // Redirect to login page
         response.sendRedirect(request.getContextPath() + "/login");
         System.out.println("User logged out. Redirecting to login page.");
     }

@@ -73,7 +73,7 @@ public class UserRegister_Servlet extends HttpServlet {
             // Handle database errors
             System.err.println("Database error during registration: " + e.getMessage());
             request.setAttribute("errorMessage", "Registration failed. Please try again.");
-            request.getRequestDispatcher("/WEB-INF/view/user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/user/register.jsp").include(request, response);
         } catch (IllegalArgumentException e) {
             // Handle validation errors
             System.err.println("Validation error during registration: " + e.getMessage());
@@ -83,7 +83,7 @@ public class UserRegister_Servlet extends HttpServlet {
             // Handle unexpected errors
             System.err.println("Unexpected error during registration: " + e.getMessage());
             request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-            request.getRequestDispatcher("/WEB-INF/view/user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/user/register.jsp").include(request, response);
         }
     }
 }

@@ -30,7 +30,6 @@ public class UserLogin_Servlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
-            // User already logged in, redirect to feed
             response.sendRedirect(request.getContextPath() + "/feed");
             System.out.println("User already logged in, redirecting to feed");
             return;
@@ -41,7 +40,6 @@ public class UserLogin_Servlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        // Forward to the login page
         request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(request, response);
         System.out.println("UserLogin_Servlet GET invoked");
     }
@@ -49,16 +47,13 @@ public class UserLogin_Servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Get form parameters
             String username = request.getParameter("username");
             String password = request.getParameter("password");
 
-            // Validate input
             if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
                 throw new IllegalArgumentException("Username and password are required");
             }
 
-            // Attempt to login the user
             User user = userController.LoginUser(username, password);
 
             if (user != null) {
@@ -66,13 +61,12 @@ public class UserLogin_Servlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
-                // Redirect to feed
                 response.sendRedirect(request.getContextPath() + "/feed");
                 System.out.println("User logged in with ID: " + user.getUserId() + ". Redirecting to feed");
             } else {
                 // Login failed - invalid credentials
                 request.setAttribute("errorMessage", "Invalid username or password");
-                request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").include(request, response);
                 System.out.println("Login failed: invalid credentials");
             }
 

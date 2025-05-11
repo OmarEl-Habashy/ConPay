@@ -1,13 +1,21 @@
 package aammo.ppv.dao;
 
-import aammo.ppv.model.Post;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import aammo.ppv.model.Comment;
+import aammo.ppv.model.Post;
 
 public class JdbcPostDAO implements PostDAO {
 
@@ -42,7 +50,19 @@ public class JdbcPostDAO implements PostDAO {
                     "WHERE h.HashtagName = ? " +
                     "ORDER BY p.CreatedAt DESC LIMIT ?, ?";
 
+    // SQL for fetching comments with username
+    private static final String SELECT_COMMENTS_BY_POST_ID =
+            "SELECT c.*, u.Username FROM Comments c " +
+            "JOIN Users u ON c.UserID = u.UserID " +
+            "WHERE c.PostID = ? ORDER BY c.CreatedAt ASC";
 
+    // SQL for counting likes on a post
+    private static final String COUNT_LIKES_BY_POST_ID =
+            "SELECT COUNT(*) FROM Likes WHERE PostID = ?";
+
+    // SQL for checking if a user has liked a post
+    private static final String CHECK_USER_LIKED_POST =
+            "SELECT COUNT(*) FROM Likes WHERE PostID = ? AND UserID = ?";
 
     public JdbcPostDAO() {
         loadProperties();
@@ -268,11 +288,10 @@ public class JdbcPostDAO implements PostDAO {
 
             preparedStatement.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
-            // Handle duplicate likes gracefully
+            // Handle duplicate likes gracefully - this is expected if user tries to like twice
             System.err.println("User has already liked this post.");
         }
     }
-
     // Method to insert a comment into the Comments table
     public void insertComment(int postId, int userId, String content) throws SQLException {
         String insertCommentSQL = "INSERT INTO Comments (PostID, UserID, Content) VALUES (?, ?, ?)";
@@ -282,6 +301,79 @@ public class JdbcPostDAO implements PostDAO {
             preparedStatement.setInt(1, postId);
             preparedStatement.setInt(2, userId);
             preparedStatement.setString(3, content);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    // Method to get all comments for a post with username information
+    public List<Comment> getCommentsByPostId(int postId) throws SQLException {
+        List<Comment> comments = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COMMENTS_BY_POST_ID)) {
+
+            preparedStatement.setInt(1, postId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int commentId = rs.getInt("CommentID");
+                int userId = rs.getInt("UserID");
+                String content = rs.getString("Content");
+                Date createdAt = new Date(rs.getTimestamp("CreatedAt").getTime());
+                String username = rs.getString("Username");
+                
+                Comment comment = new Comment(commentId, postId, userId, content, createdAt, username);
+                comments.add(comment);
+            }
+        }
+
+        return comments;
+    }
+
+    // Method to count likes for a post
+    public int getLikeCountByPostId(int postId) throws SQLException {
+        int count = 0;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(COUNT_LIKES_BY_POST_ID)) {
+
+            preparedStatement.setInt(1, postId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+
+        return count;
+    }
+
+    // Method to check if user has liked a post
+    public boolean hasUserLikedPost(int postId, int userId) throws SQLException {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_USER_LIKED_POST)) {
+
+            preparedStatement.setInt(1, postId);
+            preparedStatement.setInt(2, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+
+        return false;
+    }
+
+    // Method to remove a like
+    public void removeLike(int postId, int userId) throws SQLException {
+        String removeLikeSQL = "DELETE FROM Likes WHERE PostID = ? AND UserID = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(removeLikeSQL)) {
+            preparedStatement.setInt(1, postId);
+            preparedStatement.setInt(2, userId);
 
             preparedStatement.executeUpdate();
         }

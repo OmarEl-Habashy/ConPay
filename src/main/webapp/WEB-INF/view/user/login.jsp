@@ -11,6 +11,14 @@
         <p><strong>Hey!</strong> We are very happy to see you here!</p>
     </div>
     <div class="right">
+        <div id = "error-message">
+            <% if (request.getAttribute("errorMessage") != null) { %>
+            <div class="error">
+                <%= request.getAttribute("errorMessage") %>
+            </div>
+            <% } %>
+        </div>
+
         <form action="login" method="post">
             <div class="form-group">
                 <label for="username">User Name</label>
