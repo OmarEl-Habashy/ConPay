@@ -24,8 +24,8 @@
 
         <form action="login" method="post">
             <div class="form-group">
-                <label for="userName">Username or Email</label>
-                <input type="text" id="userName" name="userName" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
             </div>
 
             <div class="form-group">

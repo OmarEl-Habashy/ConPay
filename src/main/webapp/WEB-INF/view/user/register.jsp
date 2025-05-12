@@ -63,7 +63,6 @@
         localStorage.setItem("theme", this.checked ? "dark" : "light");
     });
 
-    // Load stored preference
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
         toggle.checked = true;
