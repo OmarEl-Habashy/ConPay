@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%
         User profileUser = (User) request.getAttribute("profileUser");
-        String title = profileUser != null ? profileUser.getUsername() + " - Twitter Clone" : "Profile";
+        String title = profileUser != null ? profileUser.getUsername() : "Profile";
     %>
     <title><%= title %></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/profile.css">
@@ -87,7 +87,7 @@
             if (userPosts != null && !userPosts.isEmpty()) {
                 for (Post post : userPosts) {
         %>
-        <div class="tweet">
+        <div class="tweet" onclick="window.location.href='${pageContext.request.contextPath}/viewPost?postId=<%= post.getPostId() %>'" style="cursor: pointer;">
             <div class="tweet-content">
                 <%= post.getCaption() %>
             </div>

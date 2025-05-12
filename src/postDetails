@@ -26,7 +26,7 @@
 
         <!-- Like Section -->
         <div class="post-actions">
-            <form action="${pageContext.request.contextPath}/viewPost" method="post" class="like-form">
+            <form action="${pageContext.request.contextPath}/postAction" method="post" class="like-form">
                 <input type="hidden" name="action" value="like">
                 <input type="hidden" name="postId" value="<%= post.getPostId() %>">
                 <button type="submit" class="like-btn">
@@ -51,7 +51,7 @@
             <% } %>
 
             <!-- Comment Form -->
-            <form action="${pageContext.request.contextPath}/viewPost" method="post" class="comment-form">
+            <form action="${pageContext.request.contextPath}/postAction" method="post" class="comment-form">
                 <input type="hidden" name="action" value="comment">
                 <input type="hidden" name="postId" value="<%= post.getPostId() %>">
                 <textarea name="content" placeholder="Add a comment..." required></textarea>
