@@ -1,133 +1,191 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
-
 body {
-    font-family: 'Inter', sans-serif; /* Use a font similar to the image */
-    background-color: #f8f9fa; /* Light background */
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f8fa;
+    color: #0f1419;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    color: #212529; /* Default text color */
+    height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
 }
-form {
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.auth-box {
     background-color: #ffffff;
-    padding: 40px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
 }
-h1 {
-    font-size: 2.5rem; /* Large heading */
-    font-weight: 700;
-    margin-top: 0;
+
+h2 {
     margin-bottom: 10px;
-    line-height: 1.2;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
 
 .form-group {
     margin-bottom: 20px;
+    text-align: left;
 }
+
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: #0f1419;
 }
 
-input[type="email"],
 input[type="text"],
+input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
+    padding: 12px;
+    border: 1px solid #ccd6dd;
+    border-radius: 10px;
+    box-sizing: border-box;
     font-size: 1rem;
-    box-sizing: border-box; /* Include padding/border in width */
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input[type="email"]::placeholder,
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-    color: #adb5bd; /* Placeholder text color */
+input:focus {
+    border-color: #1d9bf0;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.2);
 }
 
-input[type="email"]:focus,
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #86b7fe; /* Highlight on focus */
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+button.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #1d9bf0;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* Checkbox Groups */
-.checkbox-group {
-    display: flex;
-    align-items: flex-start; /* Align items to top for multi-line labels */
-    margin-bottom: 15px;
+button.btn-primary:hover {
+    background-color: #1a8cd8;
+}
+
+.bottom-link {
+    margin-top: 20px;
     font-size: 0.9rem;
-    color: #495057;
-}
-.checkbox-group.terms {
-    margin-bottom: 10px; /* Less space below terms */
-}
-.checkbox-group input[type="checkbox"] {
-    margin-top: 0.2em; /* Align checkbox slightly better with first line */
-    margin-right: 10px;
-    flex-shrink: 0; /* Prevent checkbox from shrinking */
+    color: #536471;
 }
 
-.checkbox-group label {
-    font-weight: 400; /* Normal weight for checkbox labels */
-    margin-bottom: 0;
-    line-height: 1.5;
-}
-
-.checkbox-group a,
-.signup-link a {
-    color: #0d6efd; /* Standard link blue */
+.bottom-link a {
+    color: #1d9bf0;
     text-decoration: none;
     font-weight: 600;
 }
 
-.checkbox-group a:hover,
-.signup-link a:hover {
+.bottom-link a:hover {
     text-decoration: underline;
 }
 
+.error {
+    color: red;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
 
-/* Buttons */
-.btn {
-    display: inline-block; /* Changed for flexibility */
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-align: center;
+/* Toggle Switch */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
     cursor: pointer;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-    box-sizing: border-box;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
 }
 
-.btn-primary {
-    background-color: #4263eb; /* Blue color from image */
-    color: #ffffff;
-    width: 100%; /* Make primary login button full width */
-    margin-bottom: 25px;
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
 }
 
-.btn-primary:hover {
-    background-color: #364fc7; /* Darker blue on hover */
+input:checked + .slider {
+    background-color: #1d9bf0;
 }
-/* Signup Link */
-.signup-link {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 15px; /* Space above signup link */
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #000000;
+    color: #e7e9ea;
+}
+
+body.dark-mode .auth-box {
+    background-color: #15202b;
+    color: #e7e9ea;
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"] {
+    background-color: #192734;
+    color: #e7e9ea;
+    border: 1px solid #38444d;
+}
+
+body.dark-mode label {
+    color: #e7e9ea;
+}
+
+body.dark-mode .bottom-link {
+    color: #8b98a5;
+}
+
+body.dark-mode .bottom-link a {
+    color: #1d9bf0;
 }
