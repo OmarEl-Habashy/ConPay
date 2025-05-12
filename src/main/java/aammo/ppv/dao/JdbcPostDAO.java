@@ -33,9 +33,10 @@ public class JdbcPostDAO implements PostDAO {
     private static final String SELECT_ALL_POSTS =
             "SELECT * FROM Posts ORDER BY CreatedAt DESC LIMIT ?, ?";
     private static final String SELECT_FEED_POSTS =
-            "SELECT p.* FROM Posts p " +
-                    "JOIN Follows f ON p.UserID = f.FolloweeID " +
-                    "WHERE f.FollowerID = ? " +
+            "SELECT p.*, u.Username FROM Posts p " +
+                    "JOIN Users u ON p.UserID = u.UserID " +
+                    "WHERE p.UserID = ? " +
+                    "   OR p.UserID IN (SELECT FolloweeID FROM Follows WHERE FollowerID = ?) " +
                     "ORDER BY p.CreatedAt DESC LIMIT ?, ?";
     private static final String UPDATE_POST_SQL =
             "UPDATE Posts SET ContentURL = ?, Caption = ? WHERE PostID = ?";
@@ -184,12 +185,15 @@ public class JdbcPostDAO implements PostDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FEED_POSTS)) {
 
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, offset);
-            preparedStatement.setInt(3, limit);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, offset);
+            preparedStatement.setInt(4, limit);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 Post post = extractPostFromResultSet(rs);
+                // Add this line to set the username if your Post model supports it
+                post.setUsername(rs.getString("Username"));
                 posts.add(post);
             }
         }

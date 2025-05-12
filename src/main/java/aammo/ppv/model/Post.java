@@ -7,6 +7,7 @@ public class Post {
     private String contentURL;
     private String caption;
     private Date createdAt;
+    private String username;
 
 
     public Post(int postId, int userId, String contentURL, String caption, Date createdAt) {
@@ -69,4 +70,7 @@ public class Post {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 }

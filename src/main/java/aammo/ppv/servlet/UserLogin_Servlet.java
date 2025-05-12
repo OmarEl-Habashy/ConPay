@@ -3,6 +3,7 @@ package aammo.ppv.servlet;
 import aammo.ppv.controller.UserController;
 import aammo.ppv.dao.UserDAOFactory;
 import aammo.ppv.model.User;
+import aammo.ppv.service.LogManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,7 +29,7 @@ public class UserLogin_Servlet extends HttpServlet {
         // Check if user is already logged in
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
+        LogManager.logAction("LOGIN_ATTEMPT", "User=" + (user != null ? user.getUsername() : "Guest") + ", Action=GET");
         if (user != null) {
             response.sendRedirect(request.getContextPath() + "/feed");
             System.out.println("User already logged in, redirecting to feed");

@@ -10,6 +10,11 @@
     <div class="left">
         <p><strong>Hey!</strong> We are very happy to see you here!</p>
     </div>
+    <!-- Already have account -->
+    <div class="already-account">
+        <p>You don't have an account yet?</p>
+        <a href="${pageContext.request.contextPath}/register" class="btn btn-secondary">Register here!</a>
+    </div>
     <div class="right">
         <div id = "error-message">
             <% if (request.getAttribute("errorMessage") != null) { %>

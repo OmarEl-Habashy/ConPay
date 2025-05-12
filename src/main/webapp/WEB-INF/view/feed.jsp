@@ -53,11 +53,12 @@
 </div>
 
 <!-- Feed Posts -->
+<!-- There should be ONLY ONE forEach loop for posts in your entire JSP -->
 <div class="feed-posts">
     <c:forEach var="post" items="${posts}">
         <div class="post">
             <div class="post-header">
-                <span class="post-username">@${post.userId}</span>
+                <span class="post-username">@${post.username}</span>
             </div>
             <div class="post-caption">${post.caption}</div>
             <c:if test="${not empty post.contentURL}">

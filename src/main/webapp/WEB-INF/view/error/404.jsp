@@ -9,6 +9,42 @@
 <html>
 <head>
     <title>Page Not Found</title>
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+        .error-image {
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+        .error-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #e47911;
+        }
+        .error-message {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .home-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: lightblue;
+            border: 1px solid #a88734;
+            border-radius: 3px;
+            color: #111;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .home-link:hover {
+            background-color: darkcyan;
+        }
+    </style>
 </head>
 <body>
     <div class = "error-container">

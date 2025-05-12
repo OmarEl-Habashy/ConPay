@@ -1,36 +1,54 @@
 package aammo.ppv.servlet;
 
-import aammo.ppv.dao.JdbcPostDAO;
+import aammo.ppv.controller.PostController;
+import aammo.ppv.dao.PostDAOFactory;
 import aammo.ppv.model.Comment;
 import aammo.ppv.model.Post;
-import aammo.ppv.model.User; // Add this import
+import aammo.ppv.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @WebServlet("/viewPost")
 public class ViewPostServlet extends HttpServlet {
-    private JdbcPostDAO postDAO;
+    private PostController postController;
+    private static final String LOG_FILE = System.getProperty("user.dir") + "/logs/post_actions.log";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() {
-        postDAO = new JdbcPostDAO();
+        postController = new PostController(PostDAOFactory.getPostDAO());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Prevent caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
+
         try {
             int postId = Integer.parseInt(request.getParameter("postId"));
-            Post post = postDAO.getPostById(postId);
-            List<Comment> comments = postDAO.getCommentsByPostId(postId);
-            int likeCount = postDAO.getLikeCountByPostId(postId);
+            Post post = postController.getPostById(postId);
+            List<Comment> comments = postController.getCommentsForPost(postId);
+            int likeCount = postController.getLikeCount(postId);
+
+            // Log the post view
+            User user = (User) request.getSession().getAttribute("user");
+            String username = user != null ? user.getUsername() : "Guest";
+            logAction("POST_VIEW", "User=" + username + ", PostID=" + postId);
 
             request.setAttribute("post", post);
             request.setAttribute("comments", comments);
@@ -39,6 +57,7 @@ public class ViewPostServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/user/postDetails.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
+            logAction("ERROR", "Database error: " + e.getMessage());
             throw new ServletException("Database error", e);
         }
     }
@@ -46,32 +65,49 @@ public class ViewPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Prevent caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
         try {
             String action = request.getParameter("action");
             int postId = Integer.parseInt(request.getParameter("postId"));
             User user = (User) request.getSession().getAttribute("user");
 
             if (user == null) {
+                logAction("AUTH_ERROR", "Unauthorized post action attempt");
                 response.sendRedirect(request.getContextPath() + "/login");
                 return;
             }
 
             if ("like".equals(action)) {
-                if (!postDAO.hasUserLikedPost(postId, user.getUserId())) {
-                    postDAO.insertLike(postId, user.getUserId());
-                } else {
-                    postDAO.removeLike(postId, user.getUserId());
-                }
+                // Use toggleLike method from PostController
+                postController.toggleLike(postId, user.getUserId());
+                boolean hasLiked = postController.hasUserLikedPost(postId, user.getUserId());
+                logAction(hasLiked ? "LIKE" : "UNLIKE", "User=" + user.getUsername() + ", PostID=" + postId);
             } else if ("comment".equals(action)) {
                 String content = request.getParameter("content");
                 if (content != null && !content.trim().isEmpty()) {
-                    postDAO.insertComment(postId, user.getUserId(), content);
+                    postController.insertComment(postId, user.getUserId(), content);
+                    logAction("COMMENT", "User=" + user.getUsername() + ", PostID=" + postId +
+                            ", Content=" + content);
                 }
             }
 
             response.sendRedirect(request.getContextPath() + "/viewPost?postId=" + postId);
         } catch (SQLException e) {
+            logAction("ERROR", "Database error: " + e.getMessage());
             throw new ServletException("Database error", e);
+        }
+    }
+
+    private void logAction(String actionType, String details) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(LOG_FILE, true))) {
+            String timestamp = LocalDateTime.now().format(DATE_FORMATTER);
+            writer.println("[" + timestamp + "] " + actionType + ": " + details);
+        } catch (IOException e) {
+            System.err.println("Failed to write to log file: " + e.getMessage());
         }
     }
 }

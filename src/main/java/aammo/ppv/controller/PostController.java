@@ -30,9 +30,8 @@ public class PostController {
         return postDAO.getPostsByUserId(userId);
     }
 
-    public List<Post> getFeedPosts(int userId, int page, int pageSize) throws SQLException {
-        int offset = (page - 1) * pageSize;
-        return postDAO.getFeedPostsForUser(userId, offset, pageSize);
+    public List<Post> getFeedPosts(int userId) throws SQLException {
+        return postDAO.getFeedPostsForUser(userId, 0, 100); // 100 is just an example
     }
 
     public List<Post> getRecentPosts(int page, int pageSize) throws SQLException {
