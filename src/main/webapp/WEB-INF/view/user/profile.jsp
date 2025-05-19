@@ -20,6 +20,7 @@
 <div class="container">
     <div class="profile-header">
         <h1>Profile</h1>
+        <a href="${pageContext.request.contextPath}/feed" class="home-icon" title="Go to Feed">🏠</a>
     </div>
 
     <div class="profile-banner"></div>

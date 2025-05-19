@@ -1,169 +1,96 @@
-/* General Reset */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
+/* 🌙 Dark Mode Styles */
+body.dark-mode {
+    background-color: #18191A;
+    color: #E4E6EB;
 }
 
-/* Header */
-header {
-    height: 60px;
-    background-color: #4267B2;
+body.dark-mode .search-bar-container,
+body.dark-mode .profile-container,
+body.dark-mode .create-post-container,
+body.dark-mode .post {
+    background-color: #242526;
+    color: #E4E6EB;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
 }
 
-/* Search Bar */
-.search-bar-container {
+body.dark-mode .search-input,
+body.dark-mode .create-post-container textarea,
+body.dark-mode .create-post-container input[type="url"] {
+    background-color: #3A3B3C;
+    color: #E4E6EB;
+    border: 1px solid #555;
+}
+
+body.dark-mode .search-button,
+body.dark-mode .profile-container button,
+body.dark-mode .create-post-container button {
+    background-color: #3A3B3C;
+    color: #E4E6EB;
+}
+
+body.dark-mode .search-button:hover,
+body.dark-mode .profile-container button:hover,
+body.dark-mode .create-post-container button:hover {
+    background-color: #4E4F50;
+}
+
+body.dark-mode .profile-handle,
+body.dark-mode .post-meta {
+    color: #999;
+}
+
+body.dark-mode .post-header {
+    color: #2D88FF;
+}
+
+/* 🌗 Toggle Switch Styles */
+.theme-toggle {
     display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-.search-input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 20px 0 0 20px;
-    outline: none;
-}
-.search-button {
+    justify-content: flex-end;
     padding: 10px 20px;
-    background-color: #4267B2;
-    color: white;
-    border: none;
-    border-radius: 0 20px 20px 0;
-    cursor: pointer;
-}
-.search-button:hover {
-    background-color: #365899;
 }
 
-/* Profile Section */
-.profile-container {
-    width: 280px;
-    background: white;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
 }
-.profile-pic {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 10px;
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: #ccc;
-    border-radius: 50%;
-    font-size: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background-color: #4267B2;
-}
-.profile-name {
-    font-weight: bold;
-    font-size: 20px;
-}
-.profile-handle {
-    color: #777;
-    margin-bottom: 10px;
-}
-.profile-bio {
-    font-style: italic;
-    margin-bottom: 10px;
-}
-.profile-stats {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-.profile-container button {
-    margin: 5px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #4267B2;
-    color: white;
-}
-.profile-container button:hover {
-    background-color: #365899;
+    transition: 0.4s;
+    border-radius: 24px;
 }
 
-/* Create Post */
-.create-post-container {
-    background: white;
-    width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
-.create-post-container textarea {
-    width: 100%;
-    height: 80px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    resize: none;
-}
-.create-post-container input[type="url"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-.create-post-container button {
-    padding: 10px 20px;
-    background-color: #4267B2;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-}
-.create-post-container button:hover {
-    background-color: #365899;
-}
-.post-message {
-    margin-top: 10px;
-    color: green;
-}
-
-/* Feed Posts */
-.feed-posts {
-    max-width: 600px;
-    margin: 30px auto;
-}
-.post {
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-.post-header {
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #4267B2;
-}
-.post-username {
-    font-size: 16px;
-}
-.post-caption {
-    margin: 10px 0;
-    font-size: 15px;
-}
-.post-media img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-.post-meta {
-    font-size: 12px;
-    color: #888;
-    margin-top: 10px;
+    transition: 0.4s;
+    border-radius: 50%;
 }
 
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}

@@ -18,6 +18,14 @@
 
 <header></header>
 
+<!-- 🌗 Theme Toggle Switch (you can move this to header or wherever you want) -->
+<div class="theme-toggle">
+    <label class="switch">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
+
 <!-- 🔍 Search Bar -->
 <div class="search-bar-container">
     <form action="${pageContext.request.contextPath}/search" method="get">
@@ -53,7 +61,6 @@
 </div>
 
 <!-- Feed Posts -->
-<!-- There should be ONLY ONE forEach loop for posts in your entire JSP -->
 <div class="feed-posts">
     <c:forEach var="post" items="${posts}">
         <div class="post">
@@ -72,6 +79,32 @@
         </div>
     </c:forEach>
 </div>
+
+<!-- 🌙 Dark Mode JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const switchToggle = document.getElementById('themeSwitch');
+        const body = document.body;
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            if (switchToggle) switchToggle.checked = true;
+        }
+
+        if (switchToggle) {
+            switchToggle.addEventListener('change', function () {
+                if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+    });
+</script>
 
 <%
     }

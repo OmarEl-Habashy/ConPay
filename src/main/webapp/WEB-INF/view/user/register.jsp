@@ -22,20 +22,20 @@
         <div class="error"><%= request.getAttribute("errorMessage") %></div>
         <% } %>
 
-        <form action="register" method="post">
+        <form action="register" method="post" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="userName">Username</label>
-                <input type="text" id="userName" name="userName" required>
+                <input type="text" id="userName" name="userName" minlength="3" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" minlength="8" required>
             </div>
 
             <div class="checkbox-group">
@@ -55,6 +55,29 @@
 </div>
 
 <script>
+    function validateForm() {
+        const username = document.getElementById("userName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        if (username.length < 3) {
+            alert("Username must be at least 3 characters.");
+            return false;
+        }
+
+        if (!email.endsWith("@gmail.com")) {
+            alert("Email must end with @gmail.com");
+            return false;
+        }
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return false;
+        }
+
+        return true;
+    }
+
     const toggle = document.getElementById("themeSwitcher");
     const body = document.body;
 
