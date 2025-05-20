@@ -3,6 +3,7 @@
 <%@ page import="aammo.ppv.model.User" %>
 <%@ page import="aammo.ppv.model.Post" %>
 <%@ page import="java.util.List" %>
+<!-- This is an HTML comment -->
 <!DOCTYPE html>
 <html>
 <head>

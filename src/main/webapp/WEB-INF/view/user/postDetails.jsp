@@ -2,6 +2,7 @@
 <%@ page import="aammo.ppv.model.Post" %>
 <%@ page import="aammo.ppv.model.Comment" %>
 <%@ page import="java.util.List" %>
+<!-- This is an HTML comment -->
 <html>
 <head>
     <title>View Post</title>

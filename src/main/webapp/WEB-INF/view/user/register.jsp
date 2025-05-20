@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<!-- This is an HTML comment -->
 <html>
 <head>
     <title>Register</title>
