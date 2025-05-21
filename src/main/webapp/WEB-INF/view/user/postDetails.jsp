@@ -6,9 +6,15 @@
 <html>
 <head>
     <title>View Post</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/viewPost.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/post-details.css">
 </head>
 <body>
+<div class="theme-toggle">
+    <label class="switch">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
 <div class="post-container">
     <!-- Post Content -->
     <div class="post">
@@ -61,5 +67,20 @@
         </div>
     </div>
 </div>
+<script>
+    const toggle = document.getElementById("themeSwitch");
+    const body = document.body;
+
+    toggle.addEventListener("change", function () {
+        body.classList.toggle("dark-mode", this.checked);
+        localStorage.setItem("theme", this.checked ? "dark" : "light");
+    });
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        toggle.checked = true;
+        body.classList.add("dark-mode");
+    }
+</script>
 </body>
 </html>

@@ -60,10 +60,48 @@
     </c:if>
 </div>
 
+<div class="feed-posts">
+    <c:forEach var="post" items="${posts}">
+        <div class="post" onclick="window.location.href='${pageContext.request.contextPath}/viewPost?postId=${post.postId}'" style="cursor: pointer;">
+            <div class="post-header">
+                <span class="post-username">@${post.username}</span>
+            </div>
+            <div class="post-caption">${post.caption}</div>
+            <c:if test="${not empty post.contentURL}">
+                <div class="post-media">
+                    <img src="${post.contentURL}" alt="Post media" style="max-width: 100%;"/>
+                </div>
+            </c:if>
+            <div class="post-meta">
+                <span>Posted at: ${post.createdAt}</span>
+            </div>
+        </div>
+    </c:forEach>
+</div>
+
 <!-- Feed Posts -->
 <div class="feed-posts">
     <c:forEach var="post" items="${posts}">
         <div class="post">
+            <div class="post-header">
+                <span class="post-username">@${post.username}</span>
+            </div>
+            <div class="post-caption">${post.caption}</div>
+            <c:if test="${not empty post.contentURL}">
+                <div class="post-media">
+                    <img src="${post.contentURL}" alt="Post media" style="max-width: 100%;"/>
+                </div>
+            </c:if>
+            <div class="post-meta">
+                <span>Posted at: ${post.createdAt}</span>
+            </div>
+        </div>
+    </c:forEach>
+</div>
+<!-- interactions -->
+<div class="feed-posts">
+    <c:forEach var="post" items="${posts}">
+        <div class="post" onclick="window.location.href='${pageContext.request.contextPath}/viewPost?postId=${post.postId}'" style="cursor: pointer;">
             <div class="post-header">
                 <span class="post-username">@${post.username}</span>
             </div>
