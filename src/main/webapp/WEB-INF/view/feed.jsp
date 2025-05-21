@@ -82,28 +82,19 @@
 
 <!-- 🌙 Dark Mode JavaScript -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const switchToggle = document.getElementById('themeSwitch');
-        const body = document.body;
-        const currentTheme = localStorage.getItem('theme');
+    const toggle = document.getElementById("themeSwitch");
+    const body = document.body;
 
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-mode');
-            if (switchToggle) switchToggle.checked = true;
-        }
-
-        if (switchToggle) {
-            switchToggle.addEventListener('change', function () {
-                if (this.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('theme', 'light');
-                }
-            });
-        }
+    toggle.addEventListener("change", function () {
+        body.classList.toggle("dark-mode", this.checked);
+        localStorage.setItem("theme", this.checked ? "dark" : "light");
     });
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        toggle.checked = true;
+        body.classList.add("dark-mode");
+    }
 </script>
 
 <%
