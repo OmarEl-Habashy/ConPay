@@ -18,6 +18,7 @@
 
 <header></header>
 
+<!-- 🌗 Theme Toggle Switch (you can move this to header or wherever you want) -->
 <div class="theme-toggle">
     <label class="switch">
         <input type="checkbox" id="themeSwitch">
@@ -25,6 +26,7 @@
     </label>
 </div>
 
+<!-- 🔍 Search Bar -->
 <div class="search-bar-container">
     <form action="${pageContext.request.contextPath}/search" method="get">
         <input type="text" name="query" placeholder="Search users..." class="search-input">
@@ -32,19 +34,21 @@
     </form>
 </div>
 
+<!-- 👤 Profile Section -->
 <div class="profile-container">
     <div class="profile-pic"><%= user.getUsername().substring(0,1).toLowerCase() %></div>
     <div class="profile-name"><%= user.getUsername() %></div>
     <div class="profile-handle">@<%= user.getUsername().toLowerCase() %></div>
-    <div class="profile-bio">No bio provided</div>
+    <div class="profile-bio"><%= user.getBio()%></div>
     <div class="profile-stats">
-        <div><span>0</span> Following</div>
-        <div><span>0</span> Followers</div>
+        <div><span>${followingCount}</span> Following</div>
+        <div><span>${followerCount}</span> Followers</div>
     </div>
     <button onclick="location.href='${pageContext.request.contextPath}/user/profile'">Profile</button>
     <button onclick="location.href='${pageContext.request.contextPath}/logout'">Logout</button>
 </div>
 
+<!-- Create Post Form -->
 <div class="create-post-container">
     <form action="${pageContext.request.contextPath}/feed" method="post">
         <textarea name="caption" maxlength="280" placeholder="What's on your mind?" required></textarea>
@@ -56,6 +60,7 @@
     </c:if>
 </div>
 
+<!-- Feed Posts -->
 <div class="feed-posts">
     <c:forEach var="post" items="${posts}">
         <div class="post">
@@ -75,6 +80,7 @@
     </c:forEach>
 </div>
 
+<!-- 🌙 Dark Mode JavaScript -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const switchToggle = document.getElementById('themeSwitch');

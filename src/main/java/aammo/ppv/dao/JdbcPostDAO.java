@@ -382,4 +382,28 @@ public class JdbcPostDAO implements PostDAO {
             preparedStatement.executeUpdate();
         }
     }
+
+
+    @Override
+    public List<Post> searchPostsByCaption(String query) throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        String sql = "SELECT p.*, u.Username FROM Posts p " +
+                "JOIN Users u ON p.UserID = u.UserID " +
+                "WHERE p.Caption LIKE ? ORDER BY p.CreatedAt DESC";
+
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + query + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Post post = extractPostFromResultSet(rs);
+                post.setUsername(rs.getString("Username"));
+                posts.add(post);
+            }
+        }
+
+        return posts;
+    }
 }

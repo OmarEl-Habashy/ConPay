@@ -1,124 +1,168 @@
+/* General Reset */
 body {
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
     color: #333;
 }
 
-body.dark-mode {
-    background-color: #000000;
-    color: #e7e9ea;
+/* Header */
+header {
+    height: 60px;
+    background-color: #4267B2;
 }
 
+/* Search Bar */
 .search-bar-container {
     display: flex;
     justify-content: center;
     margin: 20px 0;
 }
-
 .search-input {
-    width: 300px;
     padding: 10px;
+    width: 300px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px 0 0 20px;
+    outline: none;
 }
-
 .search-button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #4267B2;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 20px 20px 0;
     cursor: pointer;
 }
-
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: #365899;
 }
 
+/* Profile Section */
 .profile-container {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    background-color: #007bff;
-    color: white;
-    font-size: 50px;
-    line-height: 100px;
-    border-radius: 50%;
-    margin: 0 auto;
-}
-
-.profile-name {
-    font-size: 1.5em;
-    margin: 10px 0;
-}
-
-.profile-handle {
-    color: #555;
-}
-
-.create-post-container {
+    width: 280px;
+    background: white;
     margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #4267B2;
+}
+.profile-name {
+    font-weight: bold;
+    font-size: 20px;
+}
+.profile-handle {
+    color: #777;
+    margin-bottom: 10px;
+}
+.profile-bio {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.profile-container button {
+    margin: 5px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #4267B2;
+    color: white;
+}
+.profile-container button:hover {
+    background-color: #365899;
 }
 
-.create-post-container textarea,
+/* Create Post */
+.create-post-container {
+    background: white;
+    width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+.create-post-container textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+}
 .create-post-container input[type="url"] {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
 }
-
 .create-post-container button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #4267B2;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
 }
-
 .create-post-container button:hover {
-    background-color: #0056b3;
+    background-color: #365899;
+}
+.post-message {
+    margin-top: 10px;
+    color: green;
 }
 
+/* Feed Posts */
 .feed-posts {
-    margin: 20px auto;
-    width: 80%;
     max-width: 600px;
+    margin: 30px auto;
 }
-
 .post {
     background-color: white;
+    border-radius: 10px;
     padding: 20px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
-body.dark-mode .post {
-    background-color: #15202b;
-    color: #e7e9ea;
-}
-
 .post-header {
+    margin-bottom: 10px;
     font-weight: bold;
-    margin-bottom: 10px;
+    color: #4267B2;
 }
-
+.post-username {
+    font-size: 16px;
+}
 .post-caption {
-    margin-bottom: 10px;
+    margin: 10px 0;
+    font-size: 15px;
 }
-
+.post-media img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
 .post-meta {
-    font-size: 0.9em;
-    color: #555;
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
 }

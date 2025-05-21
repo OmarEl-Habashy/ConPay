@@ -307,4 +307,24 @@ public class JdbcUserDAO implements UserDAO {
             }
         }
         return user;
-    }}
+    }
+    @Override
+    public List<User> searchUsersByUsername(String query) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE Username LIKE ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + query + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                User user = extractUserFromResultSet(rs);
+                users.add(user);
+            }
+        }
+
+        return users;
+    }
+}

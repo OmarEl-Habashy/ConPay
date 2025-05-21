@@ -22,4 +22,5 @@ public interface UserDAO {
     void unfollowUser(int followerId, int followeeId) throws SQLException;
     List<User> getFollowers(int userId) throws SQLException;
     List<User> getFollowing(int userId) throws SQLException;
+    List<User> searchUsersByUsername(String query) throws SQLException;
 }

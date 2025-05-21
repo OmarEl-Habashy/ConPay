@@ -1,6 +1,8 @@
 package aammo.ppv.servlet;
 import aammo.ppv.controller.PostController;
+import aammo.ppv.controller.UserController;
 import aammo.ppv.dao.PostDAOFactory;
+import aammo.ppv.dao.UserDAOFactory;
 import aammo.ppv.model.Post;
 import aammo.ppv.model.User;
 import jakarta.servlet.ServletException;
@@ -21,6 +23,7 @@ public class Feed_Servlet extends HttpServlet {
     @Override
     public void init() {
         postController = new PostController(PostDAOFactory.getPostDAO());
+
     }
 
     @Override
@@ -32,7 +35,22 @@ public class Feed_Servlet extends HttpServlet {
 
         // Get user from session
         User user = (User) request.getSession().getAttribute("user");
+        UserController userController = new UserController(UserDAOFactory.getUserDAO());
+        int followingCount = 0;
+        try {
+            followingCount = userController.getFollowingCount(user.getUserId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        int followerCount = 0;
+        try {
+            followerCount = userController.getFollowerCount(user.getUserId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
+        request.setAttribute("followingCount", followingCount);
+        request.setAttribute("followerCount", followerCount);
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/register");
             System.out.println("No user in session, redirecting to register");

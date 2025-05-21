@@ -75,4 +75,7 @@ public class UserController {
         userDAO.unfollowUser(followerId, followeeId);
     }
 
+    public List<User> searchUsersByUsername(String query) throws SQLException {
+        return userDAO.searchUsersByUsername(query);
+    }
 }

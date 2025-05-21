@@ -51,4 +51,7 @@ public interface PostDAO {
     
     // Check if a user has liked a post
     boolean hasUserLikedPost(int postId, int userId) throws SQLException;
+
+    List<Post> searchPostsByCaption(String query) throws SQLException;
 }
+

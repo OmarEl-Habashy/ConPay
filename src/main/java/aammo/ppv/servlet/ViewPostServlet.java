@@ -1,7 +1,9 @@
 package aammo.ppv.servlet;
 
 import aammo.ppv.controller.PostController;
+import aammo.ppv.controller.UserController;
 import aammo.ppv.dao.PostDAOFactory;
+import aammo.ppv.dao.UserDAOFactory;
 import aammo.ppv.model.Comment;
 import aammo.ppv.model.Post;
 import aammo.ppv.model.User;
@@ -29,6 +31,7 @@ public class ViewPostServlet extends HttpServlet {
     @Override
     public void init() {
         postController = new PostController(PostDAOFactory.getPostDAO());
+
     }
 
     @Override
@@ -42,9 +45,21 @@ public class ViewPostServlet extends HttpServlet {
         try {
             int postId = Integer.parseInt(request.getParameter("postId"));
             Post post = postController.getPostById(postId);
+
+            if (post != null && post.getUsername() == null) {
+                // You'll need a UserController instance
+                UserController userController = new UserController(UserDAOFactory.getUserDAO());
+                User postUser = userController.selectUser(post.getUserId());
+                if (postUser != null) {
+                    // Either set it directly if you added username field to Post
+                    // post.setUsername(postUser.getUsername());
+
+                    // Or add it as a separate attribute if you can't modify Post
+                    request.setAttribute("postUsername", postUser.getUsername());
+                }
+            }
             List<Comment> comments = postController.getCommentsForPost(postId);
             int likeCount = postController.getLikeCount(postId);
-
             // Log the post view
             User user = (User) request.getSession().getAttribute("user");
             String username = user != null ? user.getUsername() : "Guest";

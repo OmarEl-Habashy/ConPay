@@ -172,4 +172,7 @@ public class PostController {
             postDAO.insertLike(postId, userId);
         }
     }
+    public List<Post> searchPostsByCaption(String query) throws SQLException {
+        return postDAO.searchPostsByCaption(query);
+    }
 }

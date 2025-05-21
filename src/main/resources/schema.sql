@@ -111,6 +111,50 @@ from Users u
 join Likes l on u.UserID = l.UserID
 where l.PostID = 1;
 
+DELETE FROM Posts WHERE UserID = 2;
+SELECT * from Posts;
 
 SELECT * from Posts;
 delete from Posts where PostID = 5;
+
+SELECT p.*, u.Username FROM Posts p
+                                JOIN Users u ON p.UserID = u.UserID
+WHERE p.UserID = ?
+   OR p.UserID IN (SELECT FolloweeID FROM Follows WHERE FollowerID = ?)
+ORDER BY p.CreatedAt DESC LIMIT ?, ?;
+
+#
+# -- Add Verified column to Users table
+# ALTER TABLE Users
+#     ADD COLUMN Verified BOOLEAN DEFAULT false;
+#
+# -- Create VerificationTokens table
+# CREATE TABLE VerificationTokens (
+#                                     TokenID INT AUTO_INCREMENT PRIMARY KEY,
+#                                     UserID INT NOT NULL,
+#                                     Token VARCHAR(255) NOT NULL UNIQUE,
+#                                     ExpiryDate TIMESTAMP NOT NULL,
+#                                     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+#                                     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+# );
+#
+# -- Optional: Create index on Token for faster lookups
+# CREATE INDEX idx_verification_token ON VerificationTokens(Token);
+
+# DROP DATABASE ConPay;
+
+CREATE TABLE Notifications (
+                               NotificationID INT AUTO_INCREMENT PRIMARY KEY,
+                               RecipientID INT NOT NULL,
+                               SenderID INT NOT NULL,
+                               Type VARCHAR(50) NOT NULL,  -- 'LIKE', 'COMMENT', 'FOLLOW', etc.
+                               ReferenceID INT NOT NULL,   -- PostID, CommentID, etc.
+                               Content TEXT,
+                               IsRead BOOLEAN DEFAULT FALSE,
+                               CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               FOREIGN KEY (RecipientID) REFERENCES Users(UserID) ON DELETE CASCADE,
+                               FOREIGN KEY (SenderID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Add index for faster notification retrieval by recipient
+CREATE INDEX idx_notification_recipient ON Notifications(RecipientID);
