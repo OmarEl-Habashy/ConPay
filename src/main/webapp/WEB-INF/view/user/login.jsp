@@ -1,6 +1,6 @@
+<%@ page import="jakarta.servlet.http.Cookie" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<!-- This is an HTML comment -->
 <html>
 <head>
     <title>Login</title>
@@ -23,10 +23,23 @@
         <div class="error"><%= request.getAttribute("errorMessage") %></div>
         <% } %>
 
+        <%
+            String rememberedUsername = "";
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("username".equals(cookie.getName())) {
+                        rememberedUsername = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        %>
+
         <form action="login" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" value="<%= rememberedUsername %>" required>
             </div>
 
             <div class="form-group">
@@ -35,6 +48,11 @@
             </div>
 
             <button type="submit" class="btn-primary">Login</button>
+
+            <div class="form-group">
+                <input type="checkbox" id="rememberMe" name="rememberMe" <%= rememberedUsername.isEmpty() ? "" : "checked" %>>
+                <label for="rememberMe">Remember Me</label>
+            </div>
         </form>
 
         <div class="bottom-link">
