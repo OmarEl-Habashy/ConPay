@@ -50,9 +50,15 @@
 
 <!-- Create Post Form -->
 <div class="create-post-container">
-    <form action="${pageContext.request.contextPath}/feed" method="post">
-        <textarea name="caption" maxlength="280" placeholder="What's on your mind?" required></textarea>
-        <input type="url" name="contentURL" placeholder="Optional: Image/Video URL">
+    <form action="${pageContext.request.contextPath}/feed" method="post" enctype="multipart/form-data">
+        <textarea name="content" maxlength="280" placeholder="What's on your mind?" required></textarea>
+
+        <div class="form-group">
+            <label for="image">Add an image (optional)</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <div class="file-preview" id="imagePreview"></div>
+        </div>
+
         <button type="submit">Post</button>
     </form>
     <c:if test="${not empty requestScope.postMessage}">
@@ -89,7 +95,7 @@
             <div class="post-caption">${post.caption}</div>
             <c:if test="${not empty post.contentURL}">
                 <div class="post-media">
-                    <img src="${post.contentURL}" alt="Post media" style="max-width: 100%;"/>
+                    <img src="${pageContext.request.contextPath}${post.contentURL}" alt="Post media" style="max-width: 100%;"/>
                 </div>
             </c:if>
             <div class="post-meta">
@@ -133,6 +139,19 @@
         toggle.checked = true;
         body.classList.add("dark-mode");
     }
+
+    // Image preview script
+    document.getElementById('image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px;">`;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 
 <%

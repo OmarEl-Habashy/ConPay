@@ -78,4 +78,7 @@ public class UserController {
     public List<User> searchUsersByUsername(String query) throws SQLException {
         return userDAO.searchUsersByUsername(query);
     }
+    public String getUserEmail(String username) throws SQLException {
+        return userDAO.getUserEmail(username);
+    }
 }

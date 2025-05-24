@@ -100,6 +100,11 @@
                 for (Post post : userPosts) {
         %>
         <div class="tweet" onclick="window.location.href='${pageContext.request.contextPath}/viewPost?postId=<%= post.getPostId() %>'" style="cursor: pointer;">
+            <% if (post.getContentURL() != null && !post.getContentURL().isEmpty()) { %>
+            <div class="post-media">
+                <img src="${pageContext.request.contextPath}<%= post.getContentURL() %>" alt="Post media" style="max-width: 100%;"/>
+            </div>
+            <% } %>
             <div class="tweet-content">
                 <%= post.getCaption() %>
             </div>
@@ -112,11 +117,10 @@
         } else {
         %>
         <div style="padding: 20px; text-align: center; color: #657786;">
-            No tweets yet
+            No posts yet
         </div>
         <% } %>
     </div>
-</div>
 <script>
     const toggle = document.getElementById("themeSwitch");
     const body = document.body;
@@ -132,5 +136,6 @@
         body.classList.add("dark-mode");
     }
 </script>
+</div>
 </body>
 </html>

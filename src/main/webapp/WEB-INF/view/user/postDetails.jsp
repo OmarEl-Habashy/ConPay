@@ -1,33 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="aammo.ppv.model.Post" %>
+<%@ page import="aammo.ppv.model.User" %>
 <%@ page import="aammo.ppv.model.Comment" %>
 <%@ page import="java.util.List" %>
-<!-- This is an HTML comment -->
+
 <html>
 <head>
     <title>View Post</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/post-details.css">
 </head>
 <body>
-<div class="theme-toggle">
-    <label class="switch">
-        <input type="checkbox" id="themeSwitch">
-        <span class="slider round"></span>
-    </label>
-</div>
-<div class="post-container">
-    <!-- Post Content -->
+<%
+    Post post = (Post) request.getAttribute("post");
+    List<Comment> comments = (List<Comment>) request.getAttribute("comments");
+    Integer likeCount = (Integer) request.getAttribute("likeCount");
+
+    String profileUsername = "";
+
+    if (post != null && post.getUsername() != null) {
+        profileUsername = post.getUsername();
+    }
+%>
+
+<a href="${pageContext.request.contextPath}/user/profile/<%=profileUsername%>" class="back-link">← Return to Profile</a>
+<div class = "post-container">
     <div class="post">
-        <%
-            Post post = (Post) request.getAttribute("post");
-            List<Comment> comments = (List<Comment>) request.getAttribute("comments");
-            Integer likeCount = (Integer) request.getAttribute("likeCount");
-        %>
+
 
         <!-- Post Image -->
         <% if (post.getContentURL() != null && !post.getContentURL().isEmpty()) { %>
         <div class="post-image">
-            <img src="<%= post.getContentURL() %>" alt="Post content">
+            <img src="${pageContext.request.contextPath}${post.getContentURL()}" alt="Post content">
         </div>
         <% } %>
 
@@ -67,20 +70,5 @@
         </div>
     </div>
 </div>
-<script>
-    const toggle = document.getElementById("themeSwitch");
-    const body = document.body;
-
-    toggle.addEventListener("change", function () {
-        body.classList.toggle("dark-mode", this.checked);
-        localStorage.setItem("theme", this.checked ? "dark" : "light");
-    });
-
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-        toggle.checked = true;
-        body.classList.add("dark-mode");
-    }
-</script>
 </body>
 </html>

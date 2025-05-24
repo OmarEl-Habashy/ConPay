@@ -158,3 +158,5 @@ CREATE TABLE Notifications (
 
 -- Add index for faster notification retrieval by recipient
 CREATE INDEX idx_notification_recipient ON Notifications(RecipientID);
+
+select * from posts;

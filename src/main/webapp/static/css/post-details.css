@@ -181,76 +181,24 @@ body {
 .back-link:hover {
     text-decoration: underline;
 }
-.theme-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-input:checked + .slider {
-    background-color: #1d9bf0;
-}
-input:checked + .slider:before {
-    transform: translateX(24px);
+.tweet-image {
+    width: 100%;
+    height: 280px; /* Twitter-like fixed height */
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f9fa; /* Light background for images */
 }
 
-/* Dark mode styles */
-body.dark-mode {
-    background-color: #000000;
-    color: #e7e9ea;
+body.dark-mode .tweet-image {
+    background-color: #192734; /* Darker background in dark mode */
 }
-body.dark-mode .container,
-body.dark-mode .post-container,
-body.dark-mode .comment,
-body.dark-mode .post {
-    background-color: #15202b;
-    color: #e7e9ea;
-}
-body.dark-mode .post-date,
-body.dark-mode .comment-date {
-    color: #8b98a5;
-}
-body.dark-mode .btn,
-body.dark-mode .btn-primary {
-    background-color: #192734;
-    color: #e7e9ea;
-}
-body.dark-mode .btn-primary:hover {
-    background-color: #1d9bf0;
-}
-body.dark-mode textarea,
-body.dark-mode input {
-    background-color: #192734;
-    color: #e7e9ea;
-    border: 1px solid #38444d;
+
+.tweet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This maintains aspect ratio while filling the container */
 }

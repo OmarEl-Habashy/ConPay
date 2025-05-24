@@ -327,4 +327,17 @@ public class JdbcUserDAO implements UserDAO {
 
         return users;
     }
+    @Override
+    public String getUserEmail(String username) throws SQLException {
+        String sql = "SELECT Email FROM Users WHERE Username = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Email");
+            }
+        }
+        return null;
+    }
 }

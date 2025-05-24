@@ -66,7 +66,7 @@
             return false;
         }
 
-        if (!email.endsWith("@gmail.com")) {
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             alert("Email must end with @gmail.com");
             return false;
         }

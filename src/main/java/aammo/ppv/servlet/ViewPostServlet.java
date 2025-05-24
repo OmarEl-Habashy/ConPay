@@ -47,15 +47,15 @@ public class ViewPostServlet extends HttpServlet {
             Post post = postController.getPostById(postId);
 
             if (post != null && post.getUsername() == null) {
-                // You'll need a UserController instance
                 UserController userController = new UserController(UserDAOFactory.getUserDAO());
                 User postUser = userController.selectUser(post.getUserId());
                 if (postUser != null) {
-                    // Either set it directly if you added username field to Post
-                    // post.setUsername(postUser.getUsername());
-
-                    // Or add it as a separate attribute if you can't modify Post
-                    request.setAttribute("postUsername", postUser.getUsername());
+                    // Set the username directly on the post object
+                    System.out.println("Setting username to: " + postUser.getUsername());
+                    post.setUsername(postUser.getUsername());
+                }
+                else {
+                    System.out.println("Post user not found for userId: " + post.getUserId());
                 }
             }
             List<Comment> comments = postController.getCommentsForPost(postId);

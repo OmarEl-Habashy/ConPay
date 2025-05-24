@@ -5,11 +5,15 @@ import aammo.ppv.dao.PostDAOFactory;
 import aammo.ppv.dao.UserDAOFactory;
 import aammo.ppv.model.Post;
 import aammo.ppv.model.User;
+import aammo.ppv.service.MediaService;
+import aammo.ppv.service.LogManager;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,13 +21,18 @@ import java.util.Date;
 import java.util.List;
 
 @WebServlet("/feed")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,  // 1 MB
+        maxFileSize = 1024 * 1024 * 10,   // 10 MB
+        maxRequestSize = 1024 * 1024 * 15 // 15 MB
+)
 public class Feed_Servlet extends HttpServlet {
     private PostController postController;
+    private final MediaService mediaService = new MediaService();
 
     @Override
     public void init() {
         postController = new PostController(PostDAOFactory.getPostDAO());
-
     }
 
     @Override
@@ -73,7 +82,6 @@ public class Feed_Servlet extends HttpServlet {
         System.out.println("Feed invoked for user: " + user.getUsername());
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
@@ -82,18 +90,41 @@ public class Feed_Servlet extends HttpServlet {
             return;
         }
 
-        String caption = request.getParameter("caption");
-        String contentURL = request.getParameter("contentURL");
+        String content = request.getParameter("content");
+        Part filePart = request.getPart("image");
 
-        try {
-            Post post = new Post(0, user.getUserId(), contentURL, caption, new Date());
-            postController.createPost(post);
-            request.setAttribute("postMessage", "Post created successfully!");
-        } catch (SQLException | IllegalArgumentException e) {
-            request.setAttribute("postMessage", "Error: " + e.getMessage());
+        System.out.println("Processing post from user: " + user.getUsername());
+        System.out.println("Content: " + content);
+        System.out.println("File part present: " + (filePart != null));
+        if (filePart != null) {
+            System.out.println("File size: " + filePart.getSize());
+            System.out.println("File name: " + filePart.getSubmittedFileName());
         }
 
-        // New (redirects to GET /feed)
+        try {
+            String mediaUrl = null;
+            if (filePart != null && filePart.getSize() > 0) {
+                mediaUrl = mediaService.saveMedia(filePart, user.getUserId());
+                System.out.println("Media saved with URL: " + mediaUrl);
+            }
+
+            Post post = new Post(0, user.getUserId(), mediaUrl, content, new Date());
+            postController.createPost(post);
+            System.out.println("Post created with ID: " + post.getPostId());
+
+            LogManager.logAction("POST_CREATED", "User=" + user.getUserId() + ", PostId=" + post.getPostId());
+            request.setAttribute("postMessage", "Post created successfully!");
+        } catch (IOException e) {
+            System.err.println("Media upload error: " + e.getMessage());
+            LogManager.logAction("MEDIA_UPLOAD_FAILED", "User=" + user.getUserId() + ", Error=" + e.getMessage());
+            request.setAttribute("postMessage", "Error uploading media: " + e.getMessage());
+        } catch (SQLException | IllegalArgumentException e) {
+            System.err.println("Post creation error: " + e.getMessage());
+            LogManager.logAction("POST_CREATION_FAILED", "User=" + user.getUserId() + ", Error=" + e.getMessage());
+            request.setAttribute("postMessage", "Error creating post: " + e.getMessage());
+        }
+
+        // Redirect to GET /feed
         response.sendRedirect(request.getContextPath() + "/feed");
     }
 }

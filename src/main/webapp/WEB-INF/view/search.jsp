@@ -260,7 +260,7 @@
                                         <span> | ${post.createdAt}</span>
                                     </div>
                                     <c:if test="${not empty post.contentURL}">
-                                        <div><img src="${post.contentURL}" alt="Post Media"></div>
+                                        <div><img src="${pageContext.request.contextPath}${post.contentURL}" alt="Post Media"></div>
                                     </c:if>
                                 </div>
                             </a>

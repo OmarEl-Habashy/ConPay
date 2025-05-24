@@ -23,4 +23,5 @@ public interface UserDAO {
     List<User> getFollowers(int userId) throws SQLException;
     List<User> getFollowing(int userId) throws SQLException;
     List<User> searchUsersByUsername(String query) throws SQLException;
+    String getUserEmail(String username) throws SQLException;
 }

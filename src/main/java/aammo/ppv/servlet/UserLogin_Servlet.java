@@ -11,7 +11,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -27,7 +31,6 @@ public class UserLogin_Servlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Examine cookies
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -36,7 +39,6 @@ public class UserLogin_Servlet extends HttpServlet {
             }
         }
 
-        // Check if user is already logged in
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         LogManager.logAction("LOGIN_ATTEMPT", "User=" + (user != null ? user.getUsername() : "Guest") + ", Action=GET");
@@ -74,12 +76,11 @@ public class UserLogin_Servlet extends HttpServlet {
 
                 if ("on".equals(rememberMe)) {
                     Cookie userCookie = new Cookie("username", user.getUsername());
-                    userCookie.setMaxAge(60 * 60 * 24 * 7); // 7 days
+                    userCookie.setMaxAge(60 * 60 * 24 * 7);
                     userCookie.setPath("/");
                     userCookie.setHttpOnly(true);
-                    // userCookie.setSecure(true); // Uncomment if using HTTPS
+                     userCookie.setSecure(true);
 
-                    // Set SameSite attribute (Servlet API 6.0+ or via header)
                     response.setHeader("Set-Cookie",
                             String.format("username=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax",
                                     user.getUsername(), 60 * 60 * 24 * 7)
@@ -87,12 +88,66 @@ public class UserLogin_Servlet extends HttpServlet {
 
                     response.addCookie(userCookie);
                 } else {
-                    // Remove the cookie if it exists
                     Cookie userCookie = new Cookie("username", "");
-                    userCookie.setMaxAge(0); // Delete cookie
+                    userCookie.setMaxAge(0);
                     userCookie.setPath("/");
                     response.addCookie(userCookie);
                 }
+
+                new Thread(() -> {
+                    try {
+                        Properties props = new Properties();
+                        props.put("mail.smtp.auth", "true");
+                        props.put("mail.smtp.starttls.enable", "true");
+                        props.put("mail.smtp.host", "smtp.gmail.com");
+                        props.put("mail.smtp.port", "587");
+                        props.put("mail.smtp.ssl.trust", "*");
+
+                        Session mailSession = Session.getInstance(props, new Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication("omar.walid.gad.0678@gmail.com", "cilr illp bmxs tasm");
+                            }
+                        });
+
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+                        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+
+                        String formattedDate = now.format(dateFormatter);
+                        String formattedTime = now.format(timeFormatter);
+
+                        Message message = new MimeMessage(mailSession);
+                        message.setFrom(new InternetAddress("omar.walid.gad.0678@gmail.com"));
+                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+                        message.setSubject("New Login to Your Account");
+
+                        String htmlContent =
+                                "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px;\">" +
+                                        "<h2 style=\"color: #333; border-bottom: 1px solid #eaeaea; padding-bottom: 10px;\">New Login Alert</h2>" +
+                                        "<p style=\"color: #555; font-size: 16px; line-height: 1.5;\">Hello " + user.getUsername() + ",</p>" +
+                                        "<p style=\"color: #555; font-size: 16px; line-height: 1.5;\">We detected a new login to your account:</p>" +
+                                        "<div style=\"background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;\">" +
+                                        "<p style=\"margin: 5px 0; color: #555;\"><strong>Date:</strong> " + formattedDate + "</p>" +
+                                        "<p style=\"margin: 5px 0; color: #555;\"><strong>Time:</strong> " + formattedTime + "</p>" +
+                                        "<p style=\"margin: 5px 0; color: #555;\"><strong>Username:</strong> " + user.getUsername() + "</p>" +
+                                        "</div>" +
+                                        "<p style=\"color: #555; font-size: 16px; line-height: 1.5;\">If this was you, you can ignore this message.</p>" +
+                                        "<p style=\"color: #555; font-size: 16px; line-height: 1.5;\">If you did not log in recently, please reset your password immediately.</p>" +
+                                        "<div style=\"margin-top: 20px; padding-top: 20px; border-top: 1px solid #eaeaea; text-align: center; color: #888; font-size: 14px;\">" +
+                                        "<p>This is an automated message, please do not reply to this email.</p>" +
+                                        "</div>" +
+                                        "</div>";
+
+                        message.setContent(htmlContent, "text/html; charset=utf-8");
+
+                        Transport.send(message);
+                        LogManager.logAction("LOGIN_EMAIL_SENT", "User=" + user.getUsername() + ", Email=" + user.getEmail());
+
+                    } catch (Exception e) {
+                        LogManager.logAction("LOGIN_EMAIL_FAILED", "User=" + user.getUsername() + ", Error=" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }).start();
 
                 response.sendRedirect(request.getContextPath() + "/feed");
                 System.out.println("User logged in with ID: " + user.getUserId() + ". Redirecting to feed");
