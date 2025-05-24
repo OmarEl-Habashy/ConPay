@@ -60,7 +60,7 @@ public class EmailNotification_Servlet extends HttpServlet {
         String userEmail = user.getEmail();
         String username = user.getUsername();
 
-        // Send email asynchronously
+        // for send email asynchronously
         new Thread(() -> {
             try {
                 sendLoginNotificationEmail(userEmail, username);
@@ -71,7 +71,6 @@ public class EmailNotification_Servlet extends HttpServlet {
             }
         }).start();
 
-        // Return success response
         response.setContentType("application/json");
         response.getWriter().write("{\"status\":\"success\",\"message\":\"Login notification email is being sent\"}");
     }

@@ -1,4 +1,7 @@
 package aammo.ppv.servlet;
+import aammo.ppv.controller.NotificationController;
+import aammo.ppv.dao.NotificationDAOFactory;
+import aammo.ppv.model.Notification;
 import aammo.ppv.controller.PostController;
 import aammo.ppv.controller.UserController;
 import aammo.ppv.dao.PostDAOFactory;
@@ -7,6 +10,7 @@ import aammo.ppv.model.Post;
 import aammo.ppv.model.User;
 import aammo.ppv.service.MediaService;
 import aammo.ppv.service.LogManager;
+import aammo.ppv.service.NotificationService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,6 +37,7 @@ public class Feed_Servlet extends HttpServlet {
     @Override
     public void init() {
         postController = new PostController(PostDAOFactory.getPostDAO());
+        NotificationService.getInstance();
     }
 
     @Override
@@ -63,12 +68,23 @@ public class Feed_Servlet extends HttpServlet {
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/register");
             System.out.println("No user in session, redirecting to register");
-            return; // Important: return here to stop execution
+            return;
         }
 
-        // Only get to this point if user is logged in
+        // Get notifications for the user
         try {
-            // ONLY set posts attribute once
+            NotificationController notificationController = new NotificationController(
+                    NotificationDAOFactory.getNotificationDAO());
+            List<Notification> notifications = notificationController.getUserNotifications(user.getUserId());
+            request.setAttribute("notifications", notifications);
+            List<Notification> unreadNotifications = notificationController.getUnreadNotifications(user.getUserId());
+            request.setAttribute("unreadNotifications", unreadNotifications);
+        } catch (SQLException e) {
+            System.err.println("Error fetching notifications: " + e.getMessage());
+            request.setAttribute("notifications", new ArrayList<>());
+            request.setAttribute("unreadNotifications", new ArrayList<>());
+        }
+        try {
             List<Post> posts = postController.getFeedPosts(user.getUserId()); // Use your pagination method
             request.setAttribute("posts", posts);
         } catch (SQLException e) {
@@ -76,7 +92,6 @@ public class Feed_Servlet extends HttpServlet {
             request.setAttribute("posts", new ArrayList<Post>());
         }
 
-        // ONLY forward once
         System.out.println("Posts in request: " + ((List)request.getAttribute("posts")).size());
         request.getRequestDispatcher("/WEB-INF/view/feed.jsp").forward(request, response);
         System.out.println("Feed invoked for user: " + user.getUsername());
@@ -107,7 +122,6 @@ public class Feed_Servlet extends HttpServlet {
                 mediaUrl = mediaService.saveMedia(filePart, user.getUserId());
                 System.out.println("Media saved with URL: " + mediaUrl);
             }
-
             Post post = new Post(0, user.getUserId(), mediaUrl, content, new Date());
             postController.createPost(post);
             System.out.println("Post created with ID: " + post.getPostId());

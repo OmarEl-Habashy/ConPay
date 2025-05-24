@@ -2,23 +2,31 @@ package aammo.ppv.controller;
 
 import aammo.ppv.dao.UserDAO;
 import aammo.ppv.model.User;
+import aammo.ppv.service.NotificationService;
 import java.sql.SQLException;
 import java.util.List;
-//hello_1
+
 public class UserController {
     private final UserDAO userDAO;
+    private NotificationService notificationService;
 
-    // Constructor with explicit DAO
     public UserController(UserDAO userDAO) {
         this.userDAO = userDAO;
+        this.notificationService = null;
     }
 
-    // Business logic methods
+    private NotificationService getNotificationService() {
+        if (this.notificationService == null) {
+            this.notificationService = NotificationService.getInstance();
+        }
+        return this.notificationService;
+    }
+
     public void insertUser(User user) throws SQLException {
-        // Validation could be added here
         validateUserData(user);
         userDAO.insertUser(user);
     }
+
     public User LoginUser(String username, String password) throws SQLException {
         return userDAO.LoginUser(username, password);
     }
@@ -41,7 +49,6 @@ public class UserController {
         return userDAO.deleteUser(id);
     }
 
-    // Example of business logic validation
     private void validateUserData(User user) {
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
@@ -51,6 +58,7 @@ public class UserController {
             throw new IllegalArgumentException("Invalid email format");
         }
     }
+
     public User getUserByUsername(String username) throws SQLException {
         return userDAO.getUserByUsername(username);
     }
@@ -69,15 +77,18 @@ public class UserController {
 
     public void followUser(int followerId, int followeeId) throws SQLException {
         userDAO.followUser(followerId, followeeId);
+        getNotificationService().notifyFollowAction(followerId, followeeId);
     }
 
     public void unfollowUser(int followerId, int followeeId) throws SQLException {
         userDAO.unfollowUser(followerId, followeeId);
+        getNotificationService().notifyUnfollowAction(followerId, followeeId);
     }
 
     public List<User> searchUsersByUsername(String query) throws SQLException {
         return userDAO.searchUsersByUsername(query);
     }
+
     public String getUserEmail(String username) throws SQLException {
         return userDAO.getUserEmail(username);
     }

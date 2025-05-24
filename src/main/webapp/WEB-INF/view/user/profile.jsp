@@ -121,21 +121,21 @@
         </div>
         <% } %>
     </div>
-<script>
-    const toggle = document.getElementById("themeSwitch");
-    const body = document.body;
+    <script>
+        const toggle = document.getElementById("themeSwitch");
+        const body = document.body;
 
-    toggle.addEventListener("change", function () {
-        body.classList.toggle("dark-mode", this.checked);
-        localStorage.setItem("theme", this.checked ? "dark" : "light");
-    });
+        toggle.addEventListener("change", function () {
+            body.classList.toggle("dark-mode", this.checked);
+            localStorage.setItem("theme", this.checked ? "dark" : "light");
+        });
 
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-        toggle.checked = true;
-        body.classList.add("dark-mode");
-    }
-</script>
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            toggle.checked = true;
+            body.classList.add("dark-mode");
+        }
+    </script>
 </div>
 </body>
 </html>

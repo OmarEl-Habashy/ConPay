@@ -25,12 +25,9 @@
 <a href="${pageContext.request.contextPath}/user/profile/<%=profileUsername%>" class="back-link">← Return to Profile</a>
 <div class = "post-container">
     <div class="post">
-
-
-        <!-- Post Image -->
         <% if (post.getContentURL() != null && !post.getContentURL().isEmpty()) { %>
-        <div class="post-image">
-            <img src="${pageContext.request.contextPath}${post.getContentURL()}" alt="Post content">
+        <div class="post-media">
+            <img src="${pageContext.request.contextPath}${post.getContentURL()}" alt="Post content" style="max-width: 600px; align-content: center;">
         </div>
         <% } %>
 

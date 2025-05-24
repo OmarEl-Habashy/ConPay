@@ -1,204 +1,241 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f7f9fa;
     margin: 0;
     padding: 0;
-    background-color: #f5f8fa;
+    color: #0f1419;
+    line-height: 1.4;
 }
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+/* Dark mode support */
+body.dark-mode {
+    background-color: #15202b;
+    color: #e7e9ea;
 }
-.post-container {
-    border-bottom: 1px solid #e1e8ed;
-    padding: 20px 0;
-}
-.post-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.post-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #1da1f2;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    margin-right: 10px;
-}
-.post-user-info {
-    flex-grow: 1;
-}
-.post-username {
-    font-weight: bold;
-    margin: 0;
-}
-.post-handle {
-    color: #657786;
-    margin: 0;
-}
-.post-content {
-    margin: 10px 0;
-    font-size: 16px;
-}
-.post-image {
-    max-width: 100%;
-    border-radius: 15px;
-    margin: 10px 0;
-}
-.post-date {
-    color: #657786;
-    font-size: 14px;
-    margin-top: 5px;
-}
-.post-actions {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #e1e8ed;
-    padding-top: 10px;
-    margin-top: 10px;
-}
-.post-action {
-    display: flex;
-    align-items: center;
-    color: #657786;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 5px;
-}
-.post-action:hover {
-    color: #1da1f2;
-}
-.comments-container {
-    margin-top: 20px;
-}
-.comment {
-    padding: 10px 0;
-    border-bottom: 1px solid #e1e8ed;
-}
-.comment-header {
-    display: flex;
-    align-items: center;
-}
-.comment-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #1da1f2;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    margin-right: 10px;
-}
-.comment-username {
-    font-weight: bold;
-    margin-right: 5px;
-}
-.comment-date {
-    color: #657786;
-    font-size: 12px;
-}
-.comment-content {
-    margin-left: 40px;
-    margin-top: 5px;
-}
-.comment-form {
-    margin-top: 20px;
-    border-top: 1px solid #e1e8ed;
-    padding-top: 20px;
-}
-.comment-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #e1e8ed;
-    border-radius: 5px;
-    resize: none;
-    height: 80px;
-    margin-bottom: 10px;
-}
-.btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.btn-primary {
-    background-color: #1da1f2;
-    color: white;
-}
-.btn-primary:hover {
-    background-color: #1991da;
-}
-.btn-danger {
-    background-color: #e0245e;
-    color: white;
-}
-.btn-danger:hover {
-    background-color: #c01e51;
-}
-.post-actions-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-.like-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #657786;
-    padding: 5px 10px;
-    border-radius: 20px;
-}
-.like-button.liked {
-    color: #e0245e;
-}
-.like-button:hover {
-    background-color: rgba(224, 36, 94, 0.1);
-}
-.like-count {
-    font-weight: bold;
-}
+
 .back-link {
     display: inline-block;
-    margin-bottom: 20px;
-    color: #1da1f2;
+    margin: 20px 0 0 20px;
+    color: #1d9bf0;
     text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
 }
+
 .back-link:hover {
     text-decoration: underline;
 }
-.tweet-image {
-    width: 100%;
-    height: 280px; /* Twitter-like fixed height */
-    margin-bottom: 10px;
-    border-radius: 8px;
+
+.post-container {
+    max-width: 600px;
+    margin: 20px auto 60px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f7f9fa; /* Light background for images */
 }
 
-body.dark-mode .tweet-image {
-    background-color: #192734; /* Darker background in dark mode */
+body.dark-mode .post-container {
+    background-color: #1e2732;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.05);
 }
 
-.tweet-image img {
+.post {
+    padding: 0 0 16px 0;
+}
+
+.post-media {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.post-media img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* This maintains aspect ratio while filling the container */
+    object-fit: cover; /* This crops the image to fit the container */
+    border-radius: 10px;
+}
+
+body.dark-mode .post-image img {
+    background-color: #2f3336; /* Dark background for images in dark mode */
+}
+
+    .post-actions {
+    padding: 0 16px 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eff3f4;
+}
+
+body.dark-mode .post-actions {
+    border-bottom: 1px solid #38444d;
+}
+
+.like-form {
+    margin: 0;
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    color: #536471;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+}
+
+.like-btn:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+body.dark-mode .like-btn {
+    color: #8b98a5;
+}
+
+body.dark-mode .like-btn:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.post-caption {
+    padding: 16px 16px 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.caption {
+    word-wrap: break-word;
+}
+
+.comments-section {
+    padding: 0 16px;
+}
+
+.comments-section h3 {
+    font-size: 19px;
+    font-weight: 800;
+    margin: 20px 0 16px;
+    color: #0f1419;
+}
+
+body.dark-mode .comments-section h3 {
+    color: #e7e9ea;
+}
+
+.comment {
+    padding: 12px 0;
+    border-bottom: 1px solid #eff3f4;
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark-mode .comment {
+    border-bottom: 1px solid #38444d;
+}
+
+.comment-text {
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.comment-date {
+    font-size: 13px;
+    color: #536471;
+}
+
+body.dark-mode .comment-date {
+    color: #8b98a5;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    border: 1px solid #cfd9de;
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-size: 15px;
+    height: 70px;
+    resize: none;
+    margin-bottom: 12px;
+    font-family: inherit;
+}
+
+body.dark-mode .comment-form textarea {
+    background-color: #273340;
+    border-color: #38444d;
+    color: #e7e9ea;
+}
+
+.comment-form textarea:focus {
+    border-color: #1d9bf0;
+    outline: none;
+}
+
+.comment-form button {
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.2s;
+}
+
+.comment-form button:hover {
+    background-color: #1a8cd8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .post-container {
+        margin: 0;
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .back-link {
+        margin: 12px 0 0 12px;
+    }
+
+    .post-image {
+        border-radius: 0;
+    }
+}
+
+.post-media {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.post-media img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This crops the image to fit the container */
+    border-radius: 10px;
 }

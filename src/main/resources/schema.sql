@@ -138,7 +138,6 @@ ORDER BY p.CreatedAt DESC LIMIT ?, ?;
 #                                     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 # );
 #
-# -- Optional: Create index on Token for faster lookups
 # CREATE INDEX idx_verification_token ON VerificationTokens(Token);
 
 # DROP DATABASE ConPay;
@@ -160,3 +159,4 @@ CREATE TABLE Notifications (
 CREATE INDEX idx_notification_recipient ON Notifications(RecipientID);
 
 select * from posts;
+select * from Notifications;
