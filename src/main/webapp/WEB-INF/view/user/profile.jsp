@@ -12,11 +12,13 @@
     <%
         User profileUser = (User) request.getAttribute("profileUser");
         String title = profileUser != null ? profileUser.getUsername() : "Profile";
+        Boolean isOwnProfile = (Boolean) request.getAttribute("isOwnProfile");
     %>
     <title><%= title %></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/profile.css">
 </head>
 <body>
+
 <div class="theme-toggle">
     <label class="switch">
         <input type="checkbox" id="themeSwitch">
@@ -55,17 +57,18 @@
 
         <div class="profile-stats">
             <div class="stat">
-                <span class="stat-value"><%= request.getAttribute("followingCount") %></span> Following
+                <a href="${pageContext.request.contextPath}/user/following/<%= profileUser.getUsername() %>" style="text-decoration: none; color: inherit;">
+                    <span class="stat-value"><%= request.getAttribute("followingCount") %></span> Following
+                </a>
             </div>
             <div class="stat">
-                <span class="stat-value"><%= request.getAttribute("followerCount") %></span> Followers
+                <a href="${pageContext.request.contextPath}/user/followers/<%= profileUser.getUsername() %>" style="text-decoration: none; color: inherit;">
+                    <span class="stat-value"><%= request.getAttribute("followerCount") %></span> Followers
+                </a>
             </div>
         </div>
 
-        <%
-            Boolean isOwnProfile = (Boolean) request.getAttribute("isOwnProfile");
-            if (isOwnProfile != null && isOwnProfile) {
-        %>
+        <% if (isOwnProfile != null && isOwnProfile) { %>
         <form action="${pageContext.request.contextPath}/user/editProfile" method="get">
             <input type="hidden" name="action" value="edit">
             <button type="submit" class="btn btn-edit">Edit profile</button>
@@ -99,10 +102,34 @@
             if (userPosts != null && !userPosts.isEmpty()) {
                 for (Post post : userPosts) {
         %>
-        <div class="tweet" onclick="window.location.href='${pageContext.request.contextPath}/viewPost?postId=<%= post.getPostId() %>'" style="cursor: pointer;">
+        <div class="post" onclick="handlePostClick(event, '${pageContext.request.contextPath}/viewPost?postId=<%= post.getPostId() %>&source=profile')" style="cursor: pointer;">
+            <div class="post-header">
+                <% if (isOwnProfile != null && isOwnProfile) { %>
+                <div class="post-options">
+                    <button class="options-btn" onclick="event.stopPropagation()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                        </svg>
+                    </button>
+                    <div class="options-dropdown">
+                        <form action="${pageContext.request.contextPath}/viewPost" method="post" onsubmit="return confirmDelete()">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="postId" value="<%= post.getPostId() %>">
+                            <input type="hidden" name="source" value="profile">
+                            <button type="submit" class="dropdown-option delete-option">Delete post</button>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+
             <% if (post.getContentURL() != null && !post.getContentURL().isEmpty()) { %>
             <div class="post-media">
-                <img src="${pageContext.request.contextPath}<%= post.getContentURL() %>" alt="Post media" style="max-width: 100%;"/>
+                <% if (post.getContentURL().startsWith("http://") || post.getContentURL().startsWith("https://")) { %>
+                <img src="<%= post.getContentURL() %>" alt="Post content" style="max-width: 600px; align-content: center;">
+                <% } else { %>
+                <img src="${pageContext.request.contextPath}<%= post.getContentURL() %>" alt="Post content" style="max-width: 600px; align-content: center;">
+                <% } %>
             </div>
             <% } %>
             <div class="tweet-content">
@@ -134,6 +161,40 @@
         if (savedTheme === "dark") {
             toggle.checked = true;
             body.classList.add("dark-mode");
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const optionBtns = document.querySelectorAll('.options-btn');
+
+            optionBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const dropdown = this.nextElementSibling;
+                    dropdown.classList.toggle('show');
+
+                    document.querySelectorAll('.options-dropdown.show').forEach(openDropdown => {
+                        if (openDropdown !== dropdown) {
+                            openDropdown.classList.remove('show');
+                        }
+                    });
+                });
+            });
+
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.options-dropdown.show').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            });
+        });
+
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this post?");
+        }
+
+        function handlePostClick(event, url) {
+            if (!event.target.closest('.post-options')) {
+                window.location.href = url;
+            }
         }
     </script>
 </div>

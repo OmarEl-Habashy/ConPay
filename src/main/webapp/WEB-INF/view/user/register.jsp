@@ -39,14 +39,16 @@
                 <input type="password" id="password" name="password" minlength="8" required>
             </div>
 
-            <div class="checkbox-group">
+            <div class="checkbox-group" style="display: flex; align-items: center; gap: 8px;">
                 <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">
+                <label for="terms" style="margin: 0;">
                     By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
                 </label>
             </div>
 
-            <button type="submit" class="btn-primary">Register</button>
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn-primary">Register</button>
+            </div>
         </form>
 
         <div class="bottom-link">

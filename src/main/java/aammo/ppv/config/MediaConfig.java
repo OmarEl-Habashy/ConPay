@@ -44,7 +44,7 @@ public class MediaConfig {
     }
 
     public static long getMaxFileSize() {
-        return Long.parseLong(properties.getProperty(MAX_FILE_SIZE_PROPERTY, "5242880")); // 5MB default
+        return Long.parseLong(properties.getProperty(MAX_FILE_SIZE_PROPERTY, "10242880"));
     }
 
     public static String[] getAllowedExtensions() {

@@ -22,10 +22,8 @@ public class MediaService {
         String fileName = getUniqueFileName(filePart.getSubmittedFileName(), userId);
         String uploadDir = MediaConfig.getUploadDirectory();
 
-        // Create the upload directory path - using absolute path
         Path dirPath = Paths.get(uploadDir).toAbsolutePath();
 
-        // Ensure directory exists
         if (!Files.exists(dirPath)) {
             Files.createDirectories(dirPath);
             System.out.println("Created directory: " + dirPath);
@@ -36,18 +34,15 @@ public class MediaService {
 
         LogManager.logAction("MEDIA_UPLOAD", "User=" + userId + ", File=" + fileName);
 
-        // Return the relative path to access the file
         return "/media/" + fileName;
     }
 
     private void validateFile(Part filePart) throws IOException {
-        // Check file size
         if (filePart.getSize() > MAX_FILE_SIZE) {
             throw new IOException("File size exceeds the maximum allowed size of " +
                     (MAX_FILE_SIZE / 1024 / 1024) + "MB");
         }
 
-        // Check file extension
         String fileName = filePart.getSubmittedFileName();
         String extension = getFileExtension(fileName).toLowerCase();
 

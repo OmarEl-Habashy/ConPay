@@ -24,7 +24,6 @@ public class NotificationObserver implements Observer {
     public void update(String action, int senderId, int recipientId, int referenceId) {
         Thread notificationThread = new Thread(() -> {
             try {
-                // Skip self-notifications
                 if (senderId == recipientId) {
                     return;
                 }

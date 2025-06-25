@@ -92,4 +92,11 @@ public class UserController {
     public String getUserEmail(String username) throws SQLException {
         return userDAO.getUserEmail(username);
     }
+    public List<User> getFollowers(int userId) throws SQLException {
+        return userDAO.getFollowers(userId);
+    }
+
+    public List<User> getFollowing(int userId) throws SQLException {
+        return userDAO.getFollowing(userId);
+    }
 }

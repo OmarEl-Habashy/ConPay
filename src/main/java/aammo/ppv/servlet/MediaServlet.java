@@ -26,10 +26,8 @@ public class MediaServlet extends HttpServlet {
             return;
         }
 
-        // Remove the leading slash
         String fileName = pathInfo.substring(1);
 
-        // Get the full file path
         Path filePath = Paths.get(MediaConfig.getUploadDirectory(), fileName);
         File file = filePath.toFile();
 
@@ -38,17 +36,14 @@ public class MediaServlet extends HttpServlet {
             return;
         }
 
-        // Set content type
         String contentType = getServletContext().getMimeType(fileName);
         if (contentType == null) {
             contentType = "application/octet-stream";
         }
         response.setContentType(contentType);
 
-        // Set caching headers
         response.setHeader("Cache-Control", "public, max-age=86400"); // Cache for 1 day
 
-        // Copy the file to the response output stream
         Files.copy(filePath, response.getOutputStream());
     }
 }

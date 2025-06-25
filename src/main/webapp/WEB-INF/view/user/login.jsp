@@ -49,9 +49,9 @@
 
             <button type="submit" class="btn-primary">Login</button>
 
-            <div class="form-group">
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
                 <input type="checkbox" id="rememberMe" name="rememberMe" <%= rememberedUsername.isEmpty() ? "" : "checked" %>>
-                <label for="rememberMe">Remember Me</label>
+                <label for="rememberMe" style="margin: 0;">Remember Me</label>
             </div>
         </form>
 

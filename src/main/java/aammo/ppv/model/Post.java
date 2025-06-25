@@ -10,6 +10,7 @@ public class Post {
     private String username;
 
 
+
     public Post(int postId, int userId, String contentURL, String caption, Date createdAt) {
         this.postId = postId;
         this.userId = userId;

@@ -160,3 +160,37 @@ CREATE INDEX idx_notification_recipient ON Notifications(RecipientID);
 
 select * from posts;
 select * from Notifications;
+
+-- Create Chat Room Table
+CREATE TABLE ChatRoom (
+                          RoomID INT AUTO_INCREMENT PRIMARY KEY,
+                          Name VARCHAR(255) NOT NULL,
+                          CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Chat Messages Table
+CREATE TABLE ChatMessage (
+                             MessageID INT AUTO_INCREMENT PRIMARY KEY,
+                             RoomID INT NOT NULL,
+                             SenderID INT NOT NULL,
+                             Content TEXT NOT NULL,
+                             CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             FOREIGN KEY (RoomID) REFERENCES ChatRoom(RoomID) ON DELETE CASCADE,
+                             FOREIGN KEY (SenderID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Create User Room Association Table
+CREATE TABLE UserChatRoom (
+                              UserID INT NOT NULL,
+                              RoomID INT NOT NULL,
+                              JoinedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                              PRIMARY KEY (UserID, RoomID),
+                              FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
+                              FOREIGN KEY (RoomID) REFERENCES ChatRoom(RoomID) ON DELETE CASCADE
+);
+
+-- Create index for efficient message retrieval
+CREATE INDEX idx_chat_message_room ON ChatMessage(RoomID);
+
+select * from Notifications;
+select * from Posts;

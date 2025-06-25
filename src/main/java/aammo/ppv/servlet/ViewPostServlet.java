@@ -50,7 +50,6 @@ public class ViewPostServlet extends HttpServlet {
                 UserController userController = new UserController(UserDAOFactory.getUserDAO());
                 User postUser = userController.selectUser(post.getUserId());
                 if (postUser != null) {
-                    // Set the username directly on the post object
                     System.out.println("Setting username to: " + postUser.getUsername());
                     post.setUsername(postUser.getUsername());
                 }
@@ -60,7 +59,6 @@ public class ViewPostServlet extends HttpServlet {
             }
             List<Comment> comments = postController.getCommentsForPost(postId);
             int likeCount = postController.getLikeCount(postId);
-            // Log the post view
             User user = (User) request.getSession().getAttribute("user");
             String username = user != null ? user.getUsername() : "Guest";
             logAction("POST_VIEW", "User=" + username + ", PostID=" + postId);
@@ -89,6 +87,7 @@ public class ViewPostServlet extends HttpServlet {
             String action = request.getParameter("action");
             int postId = Integer.parseInt(request.getParameter("postId"));
             User user = (User) request.getSession().getAttribute("user");
+            String source = request.getParameter("source");
 
             if (user == null) {
                 logAction("AUTH_ERROR", "Unauthorized post action attempt");
@@ -97,7 +96,6 @@ public class ViewPostServlet extends HttpServlet {
             }
 
             if ("like".equals(action)) {
-                // Use toggleLike method from PostController
                 postController.toggleLike(postId, user.getUserId());
                 boolean hasLiked = postController.hasUserLikedPost(postId, user.getUserId());
                 logAction(hasLiked ? "LIKE" : "UNLIKE", "User=" + user.getUsername() + ", PostID=" + postId);
@@ -108,9 +106,23 @@ public class ViewPostServlet extends HttpServlet {
                     logAction("COMMENT", "User=" + user.getUsername() + ", PostID=" + postId +
                             ", Content=" + content);
                 }
+            } else if ("delete".equals(action)) {
+                boolean deleted = postController.deletePost(postId, user.getUserId());
+                if (deleted) {
+                    logAction("DELETE", "User=" + user.getUsername() + ", PostID=" + postId);
+                    if ("profile".equals(source)) {
+                        response.sendRedirect(request.getContextPath() + "/user/profile/" + user.getUsername());
+                        return;
+                    }
+                }
             }
 
-            response.sendRedirect(request.getContextPath() + "/viewPost?postId=" + postId);
+            String redirectUrl = request.getContextPath() + "/viewPost?postId=" + postId;
+            if (source != null && !source.isEmpty()) {
+                redirectUrl += "&source=" + source;
+            }
+
+            response.sendRedirect(redirectUrl);
         } catch (SQLException e) {
             logAction("ERROR", "Database error: " + e.getMessage());
             throw new ServletException("Database error", e);

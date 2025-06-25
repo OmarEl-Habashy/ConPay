@@ -1,6 +1,7 @@
 package aammo.ppv.servlet;
 import aammo.ppv.controller.NotificationController;
 import aammo.ppv.dao.NotificationDAOFactory;
+import aammo.ppv.model.Comment;
 import aammo.ppv.model.Notification;
 import aammo.ppv.controller.PostController;
 import aammo.ppv.controller.UserController;
@@ -20,9 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/feed")
 @MultipartConfig(
@@ -71,7 +70,6 @@ public class Feed_Servlet extends HttpServlet {
             return;
         }
 
-        // Get notifications for the user
         try {
             NotificationController notificationController = new NotificationController(
                     NotificationDAOFactory.getNotificationDAO());
@@ -85,11 +83,27 @@ public class Feed_Servlet extends HttpServlet {
             request.setAttribute("unreadNotifications", new ArrayList<>());
         }
         try {
-            List<Post> posts = postController.getFeedPosts(user.getUserId()); // Use your pagination method
+            List<Post> posts = postController.getFeedPosts(user.getUserId());
+
+            Map<Integer, Integer> likeCounts = new HashMap<>();
+            Map<Integer, Integer> commentCounts = new HashMap<>();
+
+            for (Post post : posts) {
+                int postId = post.getPostId();
+                likeCounts.put(postId, postController.getLikeCount(postId));
+
+                List<Comment> comments = postController.getCommentsForPost(postId);
+                commentCounts.put(postId, comments.size());
+            }
+
             request.setAttribute("posts", posts);
+            request.setAttribute("likeCounts", likeCounts);
+            request.setAttribute("commentCounts", commentCounts);
         } catch (SQLException e) {
             System.err.println("Error fetching feed posts: " + e.getMessage());
             request.setAttribute("posts", new ArrayList<Post>());
+            request.setAttribute("likeCounts", new HashMap<>());
+            request.setAttribute("commentCounts", new HashMap<>());
         }
 
         System.out.println("Posts in request: " + ((List)request.getAttribute("posts")).size());
@@ -107,9 +121,11 @@ public class Feed_Servlet extends HttpServlet {
 
         String content = request.getParameter("content");
         Part filePart = request.getPart("image");
+        String imageUrl = request.getParameter("imageUrl");
 
         System.out.println("Processing post from user: " + user.getUsername());
         System.out.println("Content: " + content);
+        System.out.println("Image URL: " + imageUrl);
         System.out.println("File part present: " + (filePart != null));
         if (filePart != null) {
             System.out.println("File size: " + filePart.getSize());
@@ -118,10 +134,16 @@ public class Feed_Servlet extends HttpServlet {
 
         try {
             String mediaUrl = null;
-            if (filePart != null && filePart.getSize() > 0) {
+
+            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                mediaUrl = imageUrl.trim();
+                System.out.println("Using external image URL: " + mediaUrl);
+            }
+            else if (filePart != null && filePart.getSize() > 0) {
                 mediaUrl = mediaService.saveMedia(filePart, user.getUserId());
                 System.out.println("Media saved with URL: " + mediaUrl);
             }
+
             Post post = new Post(0, user.getUserId(), mediaUrl, content, new Date());
             postController.createPost(post);
             System.out.println("Post created with ID: " + post.getPostId());
@@ -138,7 +160,6 @@ public class Feed_Servlet extends HttpServlet {
             request.setAttribute("postMessage", "Error creating post: " + e.getMessage());
         }
 
-        // Redirect to GET /feed
         response.sendRedirect(request.getContextPath() + "/feed");
     }
 }

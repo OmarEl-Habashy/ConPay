@@ -12,7 +12,6 @@ public class Notification {
     private String content;
     private boolean isRead;
     private LocalDateTime createdAt;
-
     private String senderUsername;
 
     public Notification(int notificationId, int recipientId, int senderId,
@@ -28,7 +27,6 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    // Constructor without ID for new notifications
     public Notification(int recipientId, int senderId, NotificationType type,
                         int referenceId, String content) {
         this.recipientId = recipientId;
@@ -40,7 +38,6 @@ public class Notification {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and setters
     public int getNotificationId() {
         return notificationId;
     }
